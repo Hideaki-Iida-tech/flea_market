@@ -1,0 +1,12 @@
+.header {
+    background: #000;
+    max-width: 1540px;
+    min-width: 1400px;
+}
+.header__inner {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 22px 5px;
+    height: 82px;
+}
