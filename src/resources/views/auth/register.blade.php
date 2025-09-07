@@ -8,6 +8,7 @@
 @section('content')
 <div class="register__form">
     <form action="/register" class="register__form-inner" method="post">
+        @csrf
         <table class="register__form-table">
             <tr class="register__form-row-first">
                 <td>
@@ -18,13 +19,13 @@
                 <td>
                     <label class="register__form-label">
                         ユーザー名<br />
-                        <input type="text" class="register__input" name="name" />
+                        <input type="text" class="register__input" name="name" value="{{ old('name') }}" />
                     </label>
                 </td>
             </tr>
             <tr class="register__form-row">
                 <td>
-                    <label class="register__form-label">メールアドレス<br /><input type="email" class="register__input" name="email" />
+                    <label class="register__form-label">メールアドレス<br /><input type="email" class="register__input" name="email" value="{{ old('email') }}" />
                     </label>
                 </td>
             </tr>
