@@ -8,6 +8,7 @@
 @section('content')
 <div class="login__form">
     <form action="/login" class="login__form-inner" method="post">
+        @csrf
         <table class="login__form-table">
             <tr class="login__form-row-first">
                 <td>
@@ -16,7 +17,7 @@
             </tr>
             <tr class="login__form-row">
                 <td>
-                    <label class="login__form-label">メールアドレス<br /><input type="email" class="login__input" name="email" />
+                    <label class="login__form-label">メールアドレス<br /><input type="email" class="login__input" name="email" value="{{ old('email') }}" />
                     </label>
                 </td>
             </tr>
