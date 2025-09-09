@@ -10,7 +10,7 @@
 @endsection
 @section('button')
 <div class="header__button">
-    <form action="" method="post">
+    <form action="/logout" method="post">
         @csrf
         <button class="header__button-logout">ログアウト</button>
     </form>

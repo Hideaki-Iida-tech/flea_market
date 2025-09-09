@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
+use Laravel\Fortify\Contracts\RegisterResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,17 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        $this->app->singleton(RegisterResponse::class, function () {
+            // 無名クラスを作成
+            return new class implements RegisterResponse {
+                // RegisterResponseに必要なメソッドを実装
+                public function toResponse($request)
+                {
+                    // 登録後のリダイレクト先を指定
+                    return redirect('/mypage/profile');
+                }
+            };
+        });
     }
 
     /**
