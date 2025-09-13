@@ -25,18 +25,17 @@ class ProfileRequest extends FormRequest
     {
         return [
             //
-            'profile_image' => ['required', 'file', 'mimes:jpeg,png'],
+            //'profile_image' => ['required', 'file', 'mimes:jpeg,png'],
             'name' => ['required', 'string', 'max:20'],
             'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
             'address' => ['required', 'string'],
-            'building' => ['string'],
         ];
     }
     public function messages()
     {
         return [
-            'profile_image.required' => 'プロフィール用画像ファイルを指定してください',
-            'profile_image.mimes' => '拡張子.jpeg1か.pngを指定してください',
+            //'profile_image.required' => 'プロフィール用画像ファイルを指定してください',
+            //'profile_image.mimes' => '拡張子.jpegか.pngを指定してください',
             'name.required' => 'ユーザー名を入力してください',
             'name.max' => 'ユーザー名は20字以内で入力してください。',
             'postal_code.require' => '郵便番号を入力してください',
