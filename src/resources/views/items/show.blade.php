@@ -101,6 +101,16 @@
             <textarea name="body" id="" class="comment__body">
 
             </textarea>
+            @if ($errors->has('body'))
+            <div class="comment__alert-danger">
+                <ul>
+                    @foreach ($errors->get('body') as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <button class="comment__edit-submit">
                 コメントを送信する
             </button>

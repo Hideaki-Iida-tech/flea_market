@@ -37,17 +37,44 @@
                         郵便番号<br />
                         <input type="text" class="address__input" name="postal_code" />
                     </label>
+                    @if ($errors->has('postal_code'))
+                    <div class="address__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('postal_code') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="address__form-row">
                 <td>
                     <label class="address__form-label">住所<br /><input type="text" class="address__input" name="address" />
                     </label>
+                    @if ($errors->has('address'))
+                    <div class="address__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('address') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="address__form-row">
                 <td>
                     <label class="address__form-label">建物名<br /><input type="text" class="address__input" name="building" /></label>
+                    @if ($errors->has('building'))
+                    <div class="address__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('building') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="address__form-row">

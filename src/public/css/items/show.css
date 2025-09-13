@@ -97,6 +97,7 @@
     color: #ffffff;
     border-radius: 3px;
     font-size: 20px;
+    cursor: pointer;
 }
 .categories__box {
     display: flex;
@@ -147,4 +148,9 @@
     border-radius: 3px;
     color: #ffffff;
     font-size: 20px;
+    cursor: pointer;
+}
+.comment__alert-danger {
+    background: #ff0000;
+    color: #fff;
 }

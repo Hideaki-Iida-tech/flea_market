@@ -7,7 +7,7 @@
 @endsection
 @section('content')
 <div class="login__form">
-    <form action="/login" class="login__form-inner" method="post">
+    <form action="/login" class="login__form-inner" method="post" novalidate>
         @csrf
         <table class="login__form-table">
             <tr class="login__form-row-first">
@@ -19,11 +19,29 @@
                 <td>
                     <label class="login__form-label">メールアドレス<br /><input type="email" class="login__input" name="email" value="{{ old('email') }}" />
                     </label>
+                    @if ($errors->has('email'))
+                    <div class="login__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('email') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="login__form-row">
                 <td>
                     <label class="login__form-label">パスワード<br /><input type="password" class="login__input" name="password" /></label>
+                    @if ($errors->has('password'))
+                    <div class="login__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('password') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="login__form-row">

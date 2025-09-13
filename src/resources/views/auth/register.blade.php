@@ -7,7 +7,7 @@
 @endsection
 @section('content')
 <div class="register__form">
-    <form action="/register" class="register__form-inner" method="post">
+    <form action="/register" class="register__form-inner" method="post" novalidate>
         @csrf
         <table class="register__form-table">
             <tr class="register__form-row-first">
@@ -21,22 +21,58 @@
                         ユーザー名<br />
                         <input type="text" class="register__input" name="name" value="{{ old('name') }}" />
                     </label>
+                    @if ($errors->has('name'))
+                    <div class="register__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('name') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="register__form-row">
                 <td>
                     <label class="register__form-label">メールアドレス<br /><input type="email" class="register__input" name="email" value="{{ old('email') }}" />
                     </label>
+                    @if ($errors->has('email'))
+                    <div class="register__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('email') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="register__form-row">
                 <td>
                     <label class="register__form-label">パスワード<br /><input type="password" class="register__input" name="password" /></label>
+                    @if ($errors->has('password'))
+                    <div class="register__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('password') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="register__form-row">
                 <td>
                     <label class="register__form-label">確認用パスワード<br /><input type="password" class="register__input" name="password_confirmation" /></label>
+                    @if ($errors->has('password_confirmation'))
+                    <div class="register__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('password_confirmation') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="register__form-row">

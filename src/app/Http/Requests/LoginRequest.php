@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Laravel\Fortify\Http\Requests\LoginRequest as BaseLoginRequest;
 
-class LoginRequest extends FormRequest
+class LoginRequest extends BaseLoginRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -34,6 +35,7 @@ class LoginRequest extends FormRequest
         return [
             'email.required' => 'メールアドレスを入力してください',
             'password.required' => 'パスワードを入力してください',
+            'email.email' => 'メールアドレスは「ユーザー名名@ドメイン」の形式で入力してください',
         ];
     }
 }

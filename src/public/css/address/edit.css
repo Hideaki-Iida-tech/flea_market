@@ -80,3 +80,7 @@
     font-size: 25px;
     border: none;
 }
+.address__alert-danger {
+    background: #ff0000;
+    color: #fff;
+}

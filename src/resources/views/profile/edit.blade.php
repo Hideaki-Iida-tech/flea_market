@@ -10,7 +10,7 @@
 @endsection
 @section('button')
 <div class="header__button">
-    <form action="" method="post">
+    <form action="/logout" method="post">
         @csrf
         <button class="header__button-logout">ログアウト</button>
     </form>
@@ -44,22 +44,58 @@
                         ユーザー名<br />
                         <input type="text" class="profile__input" name="name" />
                     </label>
+                    @if ($errors->has('name'))
+                    <div class="profile__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('name') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="profile__form-row">
                 <td>
                     <label class="profile__form-label">郵便番号<br /><input type="text" class="profile__input" name="postal_code" />
                     </label>
+                    @if ($errors->has('postal_code'))
+                    <div class="profile__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('postal_code') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="profile__form-row">
                 <td>
                     <label class="profile__form-label">住所<br /><input type="text" class="profile__input" name="address" /></label>
+                    @if ($errors->has('address'))
+                    <div class="profile__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('address') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="profile__form-row">
                 <td>
                     <label class="profile__form-label">建物名<br /><input type="text" class="profile__input" name="building" /></label>
+                    @if ($errors->has('building'))
+                    <div class="profile__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('building') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="profile__form-row">
