@@ -10,7 +10,7 @@
 @endsection
 @section('button')
 <div class="header__button">
-    <form action="" method="post">
+    <form action="/logout" method="post">
         @csrf
         <button class="header__button-logout">ログアウト</button>
     </form>
@@ -26,9 +26,9 @@
 <div class="user-info">
     <div class="user-info-inner">
         <img class="profile__img" src="" alt="" />
-        <h1>ユーザー名</h1>
+        <h1>{{ auth()->user()->name }}</h1>
     </div>
-    <form action="">
+    <form action="/mypage/profile" method="get">
         <button class="profile__img-button">　プロフィールを編集　　</button>
     </form>
 </div>

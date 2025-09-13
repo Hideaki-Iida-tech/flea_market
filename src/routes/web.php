@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,11 @@ use App\Http\Controllers\AuthController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [AuthController::class, 'index']);
+    Route::get('/mypage/profile', [ProfileController::class, 'edit']);
+    Route::post('/mypage/profile', [ProfileController::class, 'update']);
+    Route::get('/mypage', function () {
+        return view('profile/index');
+    });
 });
 Route::get('/item/{item_id}', function () {
     return view('items/show');
@@ -39,12 +45,12 @@ Route::get('/purchase/address/{item_id}', function () {
 Route::get('/sell', function () {
     return view('items/create');
 });
-Route::get('/mypage', function () {
+/*Route::get('/mypage', function () {
     return view('profile/index');
-});
-Route::get('/mypage/profile', function () {
+});*/
+/*Route::get('/mypage/profile', function () {
     return view('profile/edit');
-});
+});*/
 Route::get('/verify-email', function () {
     return view('auth/verify-email');
 });

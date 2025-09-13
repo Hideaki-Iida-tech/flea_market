@@ -14,7 +14,7 @@
         @csrf
         <button class="header__button-logout">ログアウト</button>
     </form>
-    <form action="" method="get">
+    <form action="/mypage" method="get">
         <button class="header__button-mypage">マイページ</button>
     </form>
     <form action="" method="get">
