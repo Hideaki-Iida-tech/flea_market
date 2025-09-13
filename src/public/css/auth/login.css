@@ -47,8 +47,13 @@
     border-radius: 3px;
     font-size: 25px;
     border: none;
+    cursor: pointer;
 }
 .login__form-link {
     text-decoration: none;
     color: blue;
+}
+.login__alert-danger {
+    background: #ff0000;
+    color: #fff;
 }

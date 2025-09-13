@@ -42,11 +42,20 @@
         <div class="payment-method__title">
             支払い方法
         </div>
-        <select class="payment-method__select">
+        <select class="payment-method__select" name="payment_method">
             <option value="">選択してください</option>
             <option value="1">コンビニ払い</option>
             <option value="2">カード払い</option>
         </select>
+        @if ($errors->has('payment_method'))
+        <div class="order__alert-danger">
+            <ul>
+                @foreach ($errors->get('payment_method') as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <hr />
         <div class="address__header">
             <div class="address__title">
@@ -57,9 +66,19 @@
             </div>
         </div>
         <div class="address__content">
-            〒 XXX-YYYY<br />
-            ここには住所と建物が入ります
+            <textarea name="address" id="" class="address__textarea" readonly>〒 XXX-YYYY
+            ここには住所と建物が入ります</textarea>
+
         </div>
+        @if ($errors->has('address'))
+        <div class="order__alert-danger">
+            <ul>
+                @foreach ($errors->get('address') as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <hr />
     </div>
     <div class="purchase__confirm-submit">
