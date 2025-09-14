@@ -25,7 +25,7 @@
 
 @section('content')
 <div class="profile__form">
-    <form action="/mypage/profile" class="profile__form-inner" method="post">
+    <form action="/mypage/profile" class="profile__form-inner" method="post" enctype="multipart/form-data">
         @csrf
         <table class="profile__form-table">
             <tr class="profile__form-row-first">
@@ -35,8 +35,23 @@
             </tr>
             <tr>
                 <td>
-                    <img class="profile__img" src="" alt="" />
-                    <button class="profile__img-button">画像を選択する</button>
+                    @php
+                    $currentPath = old('current_profile_image',optional(auth()->user())->profile_image);
+                    $currentUrl = $currentPath ? Storage::disk('public')->url($currentPath) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGM4c+YMAATMAmU5mmUsAAAAAElFTkSuQmCC'
+                    @endphp
+                    <img id="profilePreview" class="profile__img" src="{{ $currentUrl }}" alt="プロフィール画像" />
+                    <input type="hidden" name="current_profile_image" value="{{ $currentPath }}" />
+                    <button id="pickImageBtn" type="button" class="profile__img-button">画像を選択する</button>
+                    <input id="profileImageInput" type="file" name="profile_image" accept=".jpeg,.png" style="display:none" />
+                    @if ($errors->has('profile_image'))
+                    <div class="profile__alert-danger">
+                        <ul>
+                            @foreach ($errors->get('profile_image') as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </td>
             </tr>
             <tr class="profile__form-row">
@@ -107,4 +122,40 @@
         </table>
     </form>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('pickImageBtn');
+        const input = document.getElementById('profileImageInput');
+        const img = document.getElementById('profilePreview');
+        const placeholder = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGM4c+YMAATMAmU5mmUsAAAAAElFTkSuQmCC";
+
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            input.click();
+        });
+        input.addEventListener('change', function() {
+            const file = this.files && this.files[0];
+            if (!file) return;
+
+            // 拡張子＆MIMEの双方でチェック（どちらか片方だけだと穴があるため）
+            const allowExts = new Set(['jpeg', 'png']);
+            const allowMimes = new Set(['image/jpeg', 'image/png']);
+
+            const ext = (file.name.split('.').pop() || '').toLowerCase();
+            const ok = allowExts.has(ext) && allowMimes.has(file.type);
+
+            if (!ok) {
+                alert('JPEG(.jpeg)またはPNG(.png)のみ選択できます');
+                this.value = '';
+                img.src = img.src || placeholder;
+                return;
+            }
+
+            const url = URL.createObjectURL(file);
+            img.src = url;
+            img.onload = () => URL.revokeObjectURL(url);
+            img.onerror = () => URL.revokeObjectURL(url);
+        });
+    });
+</script>
 @endsection

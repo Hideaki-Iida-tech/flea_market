@@ -61,6 +61,7 @@
     color: #ff0000;
     border-radius: 5px;
     height: 40px;
+    cursor: pointer;
 }
 .profile__form-row {
     height: 135.6px;

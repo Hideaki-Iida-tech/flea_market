@@ -25,7 +25,10 @@
 @section('content')
 <div class="user-info">
     <div class="user-info-inner">
-        <img class="profile__img" src="" alt="" />
+        @php
+        $currentImage = optional(auth()->user())->profile_image ? asset('storage/' . auth()->user()->profile_image) : '';
+        @endphp
+        <img class="profile__img" src="{{ $currentImage }}" alt="" />
         <h1>{{ auth()->user()->name }}</h1>
     </div>
     <form action="/mypage/profile" method="get">
