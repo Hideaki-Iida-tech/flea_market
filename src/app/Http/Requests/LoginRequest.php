@@ -26,7 +26,7 @@ class LoginRequest extends BaseLoginRequest
     {
         return [
             //
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string', 'email', 'exists:users,email'],
             'password' => ['required', 'string'],
         ];
     }
@@ -35,7 +35,8 @@ class LoginRequest extends BaseLoginRequest
         return [
             'email.required' => 'メールアドレスを入力してください',
             'password.required' => 'パスワードを入力してください',
-            'email.email' => 'メールアドレスは「ユーザー名名@ドメイン」の形式で入力してください',
+            'email.email' => 'メールアドレスは「ユーザー名@ドメイン」の形式で入力してください',
+            'email.exists' => 'ログイン情報が登録されていません',
         ];
     }
 }

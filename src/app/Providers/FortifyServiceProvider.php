@@ -16,6 +16,7 @@ use App\Http\Requests\LoginRequest as MyLoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Contracts\RegisterResponse;
+use Illuminate\Validation\ValidationException;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -81,6 +82,11 @@ class FortifyServiceProvider extends ServiceProvider
             // 取得したmodelインスタンスがnullではなく、usersテーブルのpasswordと入力したパスワードが一致すれば、取得したmodelインスタンスを返す
             if ($user && Hash::check($request->input('password'), $user->password)) {
                 return $user;
+                // それ以外の場合、パスワード不一致の例外を投げる
+            } else {
+                throw ValidationException::withMessages([
+                    'password' => ['パスワードが正しくありません'],
+                ]);
             }
             // 該当するモデルインスタンスがない場合、nullを返す。
             return null;
