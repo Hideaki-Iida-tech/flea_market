@@ -21,6 +21,8 @@ class UsersTableSeeder extends Seeder
             'email' => 'test@example.com',
             'password' => Hash::make('password'),
             'is_profile_completed' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
         DB::table('users')->insert($param);
     }
