@@ -10,4 +10,9 @@ class Condition extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
+
+    public function items()
+    {
+        return $this->belongsTo('App\Models\Item');
+    }
 }

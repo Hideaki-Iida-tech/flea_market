@@ -9,6 +9,7 @@
 <input type="text" class="header__search" placeholder="何をお探しですか？" />
 @endsection
 @section('button')
+@if(Auth::check())
 <div class="header__button">
     <form action="/logout" method="post">
         @csrf
@@ -21,6 +22,20 @@
         <button class="header__button-sell">出品</button>
     </form>
 </div>
+@else
+<div class="header__button">
+    <form action="/login" method="get">
+        @csrf
+        <button class="header__button-logout">ログイン</button>
+    </form>
+    <form action="/mypage" method="get">
+        <button class="header__button-mypage">マイページ</button>
+    </form>
+    <form action="" method="get">
+        <button class="header__button-sell">出品</button>
+    </form>
+</div>
+@endif
 @endsection
 @section('content')
 <div class="items__content">
@@ -29,13 +44,13 @@
     </div>
     <div class="items__detail">
         <h1 class="item__name">
-            商品名がここに入る
+            {{ $item['item_name'] }}
         </h1>
         <div class="brand">
-            ブランド名
+            {{ $item['brand'] }}
         </div>
         <div class="price">
-            ¥<span class="price__font">47,000</span>（税込）
+            ¥<span class="price__font">{{ number_format($item['price']) }}</span>（税込）
         </div>
         <div class="icons">
             <div class="like">
@@ -56,12 +71,7 @@
         </form>
         <h2>商品説明</h2>
         <div class="description">
-            カラー:グレー<br />
-            <br />
-            新品<br />
-            商品の状態は良好です。傷もありません。
-            <br />
-            購入後、即発送いたします。
+            {{ $item['description'] }}
         </div>
         <h2>商品の情報</h2>
         <table>
@@ -84,7 +94,7 @@
                 </th>
                 <td class="condition__box">
                     <div class="condition__name">
-                        良好
+                        {{ $condition['name'] }}
                     </div>
                 </td>
             </tr>
