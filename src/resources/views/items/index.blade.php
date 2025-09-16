@@ -9,6 +9,7 @@
 <input type="text" class="header__search" placeholder="何をお探しですか？" />
 @endsection
 @section('button')
+@if(Auth::check())
 <div class="header__button">
     <form action="/logout" method="post">
         @csrf
@@ -21,6 +22,20 @@
         <button class="header__button-sell">出品</button>
     </form>
 </div>
+@else
+<div class="header__button">
+    <form action="/login" method="get">
+        @csrf
+        <button class="header__button-logout">ログイン</button>
+    </form>
+    <form action="/mypage" method="get">
+        <button class="header__button-mypage">マイページ</button>
+    </form>
+    <form action="" method="get">
+        <button class="header__button-sell">出品</button>
+    </form>
+</div>
+@endif
 @endsection
 @section('content')
 <div class="items__menu">
@@ -28,45 +43,21 @@
 </div>
 <hr />
 <div class="items__content">
+
+    @foreach($items as $item)
+    @if(@empty(Auth::user()->id) || (Auth::user()->id !== $item['user_id']))
     <div class="items__image">
-        <img src="" alt="商品画像" class="items__image-content" /><br />
-        商品名
+        <a href="/item/{{ $item['id'] }}">
+            <img src="" alt="商品画像" class="items__image-content" />
+            <div>
+                {{ $item['item_name'] }}
+                @if(optional($item->order)->isNotEmpty())
+                <span>Sold</span>
+                @endif
+            </div>
+        </a>
     </div>
-    <div class="items__image">
-        <img src="" alt="商品画像" class="items__image-content" /><br />
-        商品名
-    </div>
-    <div class="items__image">
-        <img src="" alt="商品画像" class="items__image-content" /><br />
-        商品名
-    </div>
-    <div class="items__image">
-        <img src="" alt="商品画像" class="items__image-content" /><br />
-        商品名
-    </div>
-    <div class="items__image">
-        <img src="" alt="商品画像" class="items__image-content" /><br />
-        商品名
-    </div>
-    <div class="items__image">
-        <img src="" alt="商品画像" class="items__image-content" /><br />
-        商品名
-    </div>
-    <div class="items__image">
-        <img src="" alt="商品画像" class="items__image-content" /><br />
-        商品名
-    </div>
-    <div class="items__image">
-        <img src="" alt="商品画像" class="items__image-content" /><br />
-        商品名
-    </div>
-    <div class="items__image">
-        <img src="" alt="商品画像" class="items__image-content" /><br />
-        商品名
-    </div>
-    <div class="items__image">
-        <img src="" alt="商品画像" class="items__image-content" /><br />
-        商品名
-    </div>
+    @endif
+    @endforeach
 </div>
 @endsection

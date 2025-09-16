@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,16 +27,15 @@ use App\Http\Controllers\ProfileController;
 });*/
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [AuthController::class, 'index']);
+    // Route::get('/', [AuthController::class, 'index']);
     Route::get('/mypage/profile', [ProfileController::class, 'edit']);
     Route::post('/mypage/profile', [ProfileController::class, 'update']);
     Route::get('/mypage', function () {
         return view('profile/index');
     });
+    // Route::get('/item/{item_id}', [AuthController::class, 'show']);
 });
-Route::get('/item/{item_id}', function () {
-    return view('items/show');
-});
+Route::get('/item/{item_id}', [ItemController::class, 'show']);
 Route::get('/purchase/{item_id}', function () {
     return view('order/create');
 });
@@ -54,3 +54,4 @@ Route::get('/sell', function () {
 Route::get('/verify-email', function () {
     return view('auth/verify-email');
 });
+Route::get('/', [ItemController::class, 'index']);

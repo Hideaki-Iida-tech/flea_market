@@ -66,3 +66,27 @@ hr {
     height: 280px;
     background: grey;
 }
+
+/* 通常のリンク */
+a {
+    color: #000000;
+    /* 文字色 */
+    text-decoration: none;
+    /* 下線なし */
+}
+
+/* マウスを重ねたとき */
+a:hover {
+    color: #000000;
+    text-decoration: underline;
+}
+
+/* クリックした後（訪問済みリンク） */
+a:visited {
+    color: #000000;
+}
+
+/* クリック中（押下中） */
+a:active {
+    color: #000000;
+}
