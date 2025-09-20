@@ -18,7 +18,7 @@
     <form action="/mypage" method="get">
         <button class="header__button-mypage">マイページ</button>
     </form>
-    <form action="" method="get">
+    <form action="/sell" method="get">
         <button class="header__button-sell">出品</button>
     </form>
 </div>
@@ -31,7 +31,7 @@
     <form action="/mypage" method="get">
         <button class="header__button-mypage">マイページ</button>
     </form>
-    <form action="" method="get">
+    <form action="/sell" method="get">
         <button class="header__button-sell">出品</button>
     </form>
 </div>

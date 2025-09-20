@@ -11,8 +11,5 @@ class Condition extends Model
 
     protected $fillable = ['name'];
 
-    public function items()
-    {
-        return $this->belongsTo('App\Models\Item');
-    }
+    public function items() {}
 }

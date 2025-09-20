@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\PurchaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,24 +28,24 @@ use App\Http\Controllers\ItemController;
 });*/
 
 Route::middleware('auth')->group(function () {
-    // Route::get('/', [AuthController::class, 'index']);
+
     Route::get('/mypage/profile', [ProfileController::class, 'edit']);
     Route::post('/mypage/profile', [ProfileController::class, 'update']);
     Route::get('/mypage', function () {
         return view('profile/index');
     });
-    // Route::get('/item/{item_id}', [AuthController::class, 'show']);
+    Route::get('/purchase/{item_id}', [PurchaseController::class, 'index']);
+    Route::get('/sell', function () {
+        return view('items/create');
+    });
+    Route::get('/purchase/address/{item_id}', function () {
+        return view('address/edit');
+    });
 });
 Route::get('/item/{item_id}', [ItemController::class, 'show']);
-Route::get('/purchase/{item_id}', function () {
-    return view('order/create');
-});
-Route::get('/purchase/address/{item_id}', function () {
-    return view('address/edit');
-});
-Route::get('/sell', function () {
-    return view('items/create');
-});
+
+
+
 /*Route::get('/mypage', function () {
     return view('profile/index');
 });*/
