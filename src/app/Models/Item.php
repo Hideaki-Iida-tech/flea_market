@@ -17,6 +17,10 @@ class Item extends Model
     }
     public function condition()
     {
-        return $this->hasOne('\App\Models\Condition');
+        return $this->belongsTo('\App\Models\Condition');
+    }
+    public function categories()
+    {
+        return $this->belongsToMany('\App\Models\Category');
     }
 }

@@ -85,7 +85,7 @@ class FortifyServiceProvider extends ServiceProvider
                 // それ以外の場合、パスワード不一致の例外を投げる
             } else {
                 throw ValidationException::withMessages([
-                    'password' => ['パスワードが正しくありません'],
+                    'password' => ['ログイン情報が登録されていません'],
                 ]);
             }
             // 該当するモデルインスタンスがない場合、nullを返す。

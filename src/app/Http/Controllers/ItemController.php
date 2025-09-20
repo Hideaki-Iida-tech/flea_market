@@ -16,9 +16,9 @@ class ItemController extends Controller
     }
     public function show($item_id)
     {
-        $item = Item::findOrFail($item_id);
-        $condition = Condition::where('id', $item['condition_id'])->first();
-
-        return view('items/show', compact('item', 'condition'));
+        //$item = Item::findOrFail($item_id);
+        $item = Item::with('categories')->findOrFail($item_id);
+        //dd($item);
+        return view('items/show', compact('item'));
     }
 }

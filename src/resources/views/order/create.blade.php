@@ -17,7 +17,7 @@
     <form action="/mypage" method="get">
         <button class="header__button-mypage">マイページ</button>
     </form>
-    <form action="" method="get">
+    <form action="/sell" method="get">
         <button class="header__button-sell">出品</button>
     </form>
 </div>
@@ -31,10 +31,10 @@
             </div>
             <div>
                 <div class="item__name">
-                    商品名
+                    {{ $item['item_name'] }}
                 </div>
                 <div class="price">
-                    ¥ 47,000
+                    ¥{{ number_format($item['price']) }}
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 配送先
             </div>
             <div class="address__edit">
-                <a href="" class="address__edit--link">変更する</a>
+                <a href="/purchase/address/{{ $item['id'] }}}" class="address__edit--link">変更する</a>
             </div>
         </div>
         <div class="address__content">
@@ -87,7 +87,7 @@
                 <th>
                     商品代金
                 </th>
-                <td>¥47,000</td>
+                <td>¥{{ number_format($item['price']) }}</td>
             </tr>
             <tr>
                 <th>

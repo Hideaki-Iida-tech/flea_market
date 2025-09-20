@@ -18,7 +18,7 @@
     <form action="/mypage" method="get">
         <button class="header__button-mypage">マイページ</button>
     </form>
-    <form action="" method="get">
+    <form action="/sell" method="get">
         <button class="header__button-sell">出品</button>
     </form>
 </div>
@@ -31,7 +31,7 @@
     <form action="/mypage" method="get">
         <button class="header__button-mypage">マイページ</button>
     </form>
-    <form action="" method="get">
+    <form action="/sell" method="get">
         <button class="header__button-sell">出品</button>
     </form>
 </div>
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <form action="" class="form__purchase">
+        <form action="/purchase/{{ $item['id'] }}" class="form__purchase" method="get">
             <button class="form__purchase-submit">購入手続きへ</button>
         </form>
         <h2>商品説明</h2>
@@ -80,12 +80,11 @@
                     カテゴリー
                 </th>
                 <td class="categories__box">
+                    @foreach($item->categories as $category)
                     <div class="category__name">
-                        洋服
+                        {{ $category->name }}
                     </div>
-                    <div class="category__name">
-                        メンズ
-                    </div>
+                    @endforeach
                 </td>
             </tr>
             <tr>
@@ -94,7 +93,7 @@
                 </th>
                 <td class="condition__box">
                     <div class="condition__name">
-                        {{ $condition['name'] }}
+                        {{ $item->condition->name }}
                     </div>
                 </td>
             </tr>
