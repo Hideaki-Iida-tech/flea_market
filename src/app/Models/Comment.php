@@ -10,4 +10,8 @@ class Comment extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'item_id', 'body'];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

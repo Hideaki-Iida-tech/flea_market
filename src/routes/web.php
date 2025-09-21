@@ -41,6 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/purchase/address/{item_id}', function () {
         return view('address/edit');
     });
+    Route::post('/item/{item_id}/comment', [ItemController::class, 'commentCreate']);
+    Route::post('/item/{item_id}/like', [ItemController::class, 'toggle']);
 });
 Route::get('/item/{item_id}', [ItemController::class, 'show']);
 
