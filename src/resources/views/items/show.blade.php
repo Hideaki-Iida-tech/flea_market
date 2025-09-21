@@ -40,7 +40,17 @@
 @section('content')
 <div class="items__content">
     <div class="items__image">
-        <img src="" alt="商品画像" class="items__img" />
+        @php
+        if(str_starts_with($item['item_image'],'https://')){
+        $currentImage = $item['item_image'];
+        }
+        elseif($item['item_image']){
+        $currentImage = asset('storage/' . $item['item_image']);
+        }else{
+        $currentImage = '';
+        }
+        @endphp
+        <img src="{{ $currentImage }}" alt="商品画像" class="items__img" />
     </div>
     <div class="items__detail">
         <h1 class="item__name">
@@ -53,16 +63,28 @@
             ¥<span class="price__font">{{ number_format($item['price']) }}</span>（税込）
         </div>
         <div class="icons">
+
+
             <div class="like">
-                <img src="" alt="いいね" class="like__img">
+                <form action="/item/{{$item['id']}}/like" method="post">
+                    @csrf
+                    <button type="submit" class="like-button">
+                        @if($item->likes->contains(auth()->id()))
+                        <img src="{{ asset('images/like_on.png') }}" alt="いいね" class="like__img">
+                        @else
+                        <img src="{{ asset('images/like_off.png') }}" alt="いいね" class="like__img">
+                        @endif
+                    </button>
+                </form>
                 <div class="like__count">
-                    3
+                    {{ $item->likes->count() }}
                 </div>
             </div>
+
             <div class="comment">
-                <img src="" alt="コメント" class="comment__img">
+                <img src="{{ asset('images/comment.png') }}" alt="コメント" class="comment__img">
                 <div class="comment__count">
-                    1
+                    {{ $comments->count() }}
                 </div>
             </div>
         </div>
@@ -98,18 +120,23 @@
                 </td>
             </tr>
         </table>
-        <h2>コメント(<span class="comment__count">1</span>)</h2>
-        <div class="user__info">
-            <img src="" alt="プロフィールイメージ" class="profile__image">
-            <div class="user__name">admin</div>
+        <h2>コメント(<span class="comment__count">{{ $comments->count() }}</span>)</h2>
+        <div class="comment__container">
+            @foreach($comments as $comment)
+            @php
+            $currentImage = optional($comment->user)->profile_image ? asset('storage/' . $comment->user->profile_image) : '';
+            @endphp
+            <div class="user__info">
+                <img src="{{ $currentImage }}" alt="プロフィールイメージ" class="profile__image">
+                <div class="user__name">{{ $comment->user->name }}</div>
+            </div>
+            <div class="comment__content">{{ $comment->body }}</div>
+            @endforeach
         </div>
-        <div class="comment__content">ここにコメントが入ります。
-        </div>
-        <form action="" class="comment__edit">
+        <form action="/item/{{ $item['id'] }}/comment" class="comment__edit" method="post">
+            @csrf
             <h3>商品へのコメント</h3>
-            <textarea name="body" id="" class="comment__body">
-
-            </textarea>
+            <textarea name="body" id="" class="comment__body">{{ old('body')}}</textarea>
             @if ($errors->has('body'))
             <div class="comment__alert-danger">
                 <ul>

@@ -23,5 +23,7 @@ class DatabaseSeeder extends Seeder
         // 商品詳細情報のシーダー
         // 必ず前4つのシーダーの後にコール
         $this->call(ItemsTableSeeder::class);
+        // itemsテーブルに登録した商品のカテゴリーを表す中間テーブルのシーダーをコール
+        $this->call(CategoryItemTableSeeder::class);
     }
 }
