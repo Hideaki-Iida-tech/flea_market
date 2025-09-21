@@ -23,4 +23,8 @@ class Item extends Model
     {
         return $this->belongsToMany('\App\Models\Category');
     }
+    public function likes()
+    {
+        return $this->belongsToMany('\App\Models\User', 'item_likes')->withTimeStamps();
+    }
 }

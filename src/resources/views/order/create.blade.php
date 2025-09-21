@@ -26,8 +26,18 @@
 <div class="purchase__content">
     <div class="purchase__setting">
         <div class="purchase__item">
+            @php
+            if(str_starts_with($item['item_image'],'https://')){
+            $currentImage = $item['item_image'];
+            }
+            elseif($item['item_image']){
+            $currentImage = asset('storage/' . $item['item_image']);
+            }else{
+            $currentImage = '';
+            }
+            @endphp
             <div class="item__image">
-                <img src="" alt="商品画像" class="item__img">
+                <img src="{{ $currentImage }}" alt="商品画像" class="item__img">
             </div>
             <div>
                 <div class="item__name">

@@ -17,8 +17,28 @@ class UsersTableSeeder extends Seeder
     {
         // ユーザー情報のダミーデータを作成
         $param = [
-            'name' => 'テストユーザー',
-            'email' => 'test@example.com',
+            'name' => 'テストユーザー1',
+            'email' => 'test1@example.com',
+            'password' => Hash::make('password'),
+            'is_profile_completed' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+        DB::table('users')->insert($param);
+
+        $param = [
+            'name' => 'テストユーザー2',
+            'email' => 'test2@example.com',
+            'password' => Hash::make('password'),
+            'is_profile_completed' => false,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+        DB::table('users')->insert($param);
+
+        $param = [
+            'name' => 'テストユーザー3',
+            'email' => 'test3@example.com',
             'password' => Hash::make('password'),
             'is_profile_completed' => false,
             'created_at' => now(),
