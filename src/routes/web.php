@@ -34,17 +34,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/mypage', function () {
         return view('profile/index');
     });
-    Route::get('/purchase/{item_id}', [PurchaseController::class, 'index']);
+    Route::get('/purchase/{item_id}', [PurchaseController::class, 'index'])->where('item_id', '[0-9]+');
+    Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->where('item_id', '[0-9]+');
     Route::get('/sell', function () {
         return view('items/create');
     });
     Route::get('/purchase/address/{item_id}', function () {
         return view('address/edit');
     });
-    Route::post('/item/{item_id}/comment', [ItemController::class, 'commentCreate']);
-    Route::post('/item/{item_id}/like', [ItemController::class, 'toggle']);
+    Route::post('/item/{item_id}/comment', [ItemController::class, 'commentCreate'])->where('item_id', '[0-9]+');
+    Route::post('/item/{item_id}/like', [ItemController::class, 'toggle'])->where('item_id', '[0-9]+');
 });
-Route::get('/item/{item_id}', [ItemController::class, 'show']);
+Route::get('/item/{item_id}', [ItemController::class, 'show'])->where('item_id', '[0-9]+');
 
 
 

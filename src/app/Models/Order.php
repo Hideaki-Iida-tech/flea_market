@@ -21,5 +21,16 @@ class Order extends Model
         return self::$paymentLabels[$this->payment_method] ?? '不明';
     }
 
+    /**
+     * 指定された item_id が orders テーブルに存在するかを判定
+     *
+     * @param int $item_id
+     * @return bool
+     */
+    public static function isSold(int $item_id): bool
+    {
+        return self::where('item_id', $item_id)->exists();
+    }
+
     protected $fillable = ['user_id', 'item_id', 'price', 'address', 'payment_method', 'postal_code', 'building'];
 }
