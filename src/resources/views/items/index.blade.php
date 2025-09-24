@@ -45,7 +45,7 @@
 <div class="items__content">
 
     @foreach($items as $item)
-    @if(@empty(Auth::user()->id) || (Auth::user()->id !== $item['user_id']))
+    @if(empty(auth()->id()) || (auth()->id() !== $item['user_id']))
     @php
     if(str_starts_with($item['item_image'],'https://')){
     $currentImage = $item['item_image'];
@@ -61,8 +61,8 @@
             <img src="{{ $currentImage }}" alt="商品画像" class="items__image-content" />
             <div>
                 {{ $item['item_name'] }}
-                @if(optional($item->order)->isNotEmpty())
-                <span>Sold</span>
+                @if($item->order)
+                <span class="sold">Sold</span>
                 @endif
             </div>
         </a>

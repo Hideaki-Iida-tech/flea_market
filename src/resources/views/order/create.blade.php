@@ -43,7 +43,7 @@
                 <div class="item__name">
                     {{ $item['item_name'] }}
                 </div>
-                <div class="price">
+                <div class="price-info">
                     ¥{{ number_format($item['price']) }}
                 </div>
             </div>
@@ -52,10 +52,11 @@
         <div class="payment-method__title">
             支払い方法
         </div>
-        <select class="payment-method__select" name="payment_method">
+        <select id="paymentSelect" class="payment-method__select" form="order-form" name="payment_method">
             <option value="">選択してください</option>
-            <option value="1">コンビニ払い</option>
-            <option value="2">カード払い</option>
+            @foreach($paymentLabels as $key => $value)
+            <option value="{{ $key }}">{{ $value }}</option>
+            @endforeach
         </select>
         @if ($errors->has('payment_method'))
         <div class="order__alert-danger">
@@ -76,8 +77,8 @@
             </div>
         </div>
         <div class="address__content">
-            <textarea name="address" id="" class="address__textarea" readonly>〒 XXX-YYYY
-            ここには住所と建物が入ります</textarea>
+            <textarea name="address" id="" class="address__textarea" readonly>〒 {{ $user->postal_code }}
+{{ $user->address }} {{ $user->building }}</textarea>
 
         </div>
         @if ($errors->has('address'))
@@ -94,23 +95,44 @@
     <div class="purchase__confirm-submit">
         <table class=price__table>
             <tr>
-                <th>
+                <th class="price-table-col">
                     商品代金
                 </th>
                 <td>¥{{ number_format($item['price']) }}</td>
             </tr>
             <tr>
-                <th>
+                <th class="price-table-col">
                     支払い方法
                 </th>
                 <td>
-                    コンビニ払い
+                    <span id="selectedValue">
+                        選択してください
+                    </span>
                 </td>
             </tr>
         </table>
-        <button class="purchase__button-submit">
-            購入する
-        </button>
+        @if(!$sold)
+        <form id="order-form" action="/purchase/{{$item['id']}}" method="post">
+            @csrf
+            {{--<input type="hidden" name="user_id" value="{{ auth()->id() }}" />--}}
+            {{--<input type="hidden" name="item_id" value="{{ $item['id'] }}" />--}}
+            <input type="hidden" name="price" value="{{ $item['price'] }}" />
+            <input type="hidden" name="postal_code" value="{{ $user->postal_code }}" />
+            <input type="hidden" name="address" value="{{ $user->address }}" />
+            <input type="hidden" name="building" value="{{ $user->building }}" />
+            <button class="purchase__button-submit">
+                購入する
+            </button>
+        </form>
+        @endif
     </div>
 </div>
+<script>
+    const select = document.getElementById('paymentSelect');
+    const valueOutput = document.getElementById('selectedValue');
+    select.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        valueOutput.textContent = selectedOption.text;
+    });
+</script>
 @endsection

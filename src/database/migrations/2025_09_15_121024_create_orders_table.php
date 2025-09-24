@@ -19,8 +19,8 @@ class CreateOrdersTable extends Migration
             $table->id();
             // usersテーブルのidを外部キーとするuser_id
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            // itemsテーブルのidを外部キーとするitem_id
-            $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            // itemsテーブルのidを外部キーとするitem_idユニーク指定
+            $table->foreignId('item_id')->constrained('items')->cascadeOnDelete()->unique();
             // 注文時の値段を格納
             $table->unsignedBigInteger('price');
             // 商品送付先

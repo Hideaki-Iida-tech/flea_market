@@ -7,7 +7,7 @@ use App\Models\Item;
 use App\Models\Condition;
 use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Order;
 
 class ItemController extends Controller
 {
@@ -21,13 +21,14 @@ class ItemController extends Controller
     {
         $item = Item::with('categories')->findOrFail($item_id);
         $comments = Comment::with('user')->where('item_id', $item_id)->get();
+        $sold = Order::isSold($item_id);
         //dd($item);
-        return view('items/show', compact('item', 'comments'));
+        return view('items/show', compact('item', 'comments', 'sold'));
     }
     public function commentCreate(CommentRequest $request, $item_id)
     {
         $form = $request->all();
-        $form['user_id'] = Auth::user()->id;
+        $form['user_id'] = auth()->id();
         $form['item_id'] = $item_id;
         Comment::create($form);
         return redirect('/item/' . $item_id);

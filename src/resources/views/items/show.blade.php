@@ -66,6 +66,7 @@
 
 
             <div class="like">
+                @if(Auth::check())
                 <form action="/item/{{$item['id']}}/like" method="post">
                     @csrf
                     <button type="submit" class="like-button">
@@ -76,6 +77,18 @@
                         @endif
                     </button>
                 </form>
+                @else
+                <form id="like-form" action="/item/{{$item['id']}}/like" method="post">
+                    @csrf
+                    <button type="submit" class="like-button">
+                        @if($item->likes->contains(auth()->id()))
+                        <img src="{{ asset('images/like_on.png') }}" alt="いいね" class="like__img">
+                        @else
+                        <img src="{{ asset('images/like_off.png') }}" alt="いいね" class="like__img">
+                        @endif
+                    </button>
+                </form>
+                @endif
                 <div class="like__count">
                     {{ $item->likes->count() }}
                 </div>
@@ -88,9 +101,17 @@
                 </div>
             </div>
         </div>
+        @if(!$sold)
+        @if(Auth::check())
         <form action="/purchase/{{ $item['id'] }}" class="form__purchase" method="get">
             <button class="form__purchase-submit">購入手続きへ</button>
         </form>
+        @else
+        <form id="purchase-form" action="/purchase/{{ $item['id'] }}" class="form__purchase" method="get">
+            <button class="form__purchase-submit">購入手続きへ</button>
+        </form>
+        @endif
+        @endif
         <h2>商品説明</h2>
         <div class="description">
             {{ $item['description'] }}
@@ -133,6 +154,7 @@
             <div class="comment__content">{{ $comment->body }}</div>
             @endforeach
         </div>
+        @if(Auth::check())
         <form action="/item/{{ $item['id'] }}/comment" class="comment__edit" method="post">
             @csrf
             <h3>商品へのコメント</h3>
@@ -151,6 +173,40 @@
                 コメントを送信する
             </button>
         </form>
+        @else
+        <form id="comment-form" action="/item/{{ $item['id'] }}/comment" class="comment__edit" method="post">
+            @csrf
+            <h3>商品へのコメント</h3>
+            <textarea name="body" id="" class="comment__body">{{ old('body')}}</textarea>
+            @if ($errors->has('body'))
+            <div class="comment__alert-danger">
+                <ul>
+                    @foreach ($errors->get('body') as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
+            <button class="comment__edit-submit">
+                コメントを送信する
+            </button>
+        </form>
+        @endif
     </div>
 </div>
+<script>
+    const likeForm = document.getElementById('like-form');
+    const commentForm = document.getElementById('comment-form');
+    const purchaseForm = document.getElementById('purchase-form');
+    likeForm.addEventListener("submit", function() {
+        alert("いいねするにはログインが必要です。");
+    });
+    commentForm.addEventListener("submit", function() {
+        alert("コメントするにはログインが必要です。");
+    });
+    purchaseForm.addEventListener("submit", function() {
+        alert("購入手続きを行うにはログインが必要です。");
+    });
+</script>
 @endsection

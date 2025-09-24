@@ -90,3 +90,6 @@ a:visited {
 a:active {
     color: #000000;
 }
+.sold {
+    color: #ff0000;
+}

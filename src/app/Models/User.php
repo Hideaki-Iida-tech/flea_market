@@ -46,4 +46,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public static function isProfileCompleted(int $user_id): bool
+    {
+
+        $user = Self::where('id', $user_id)->first();
+        return $user?->is_profile_completed ?? false;
+    }
 }
