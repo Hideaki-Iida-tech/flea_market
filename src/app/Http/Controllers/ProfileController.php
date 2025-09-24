@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfileRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -18,7 +17,7 @@ class ProfileController extends Controller
     // プロフィールの更新アクションメソッド
     public function update(ProfileRequest $request)
     {
-        $user = Auth::user();
+        $user = auth()->user();
         // テキスト項目を変数に格納
         $data = $request->only(['name', 'postal_code', 'address', 'building', 'is_profile_completed']);
         // 画像が選択させている場合は保存

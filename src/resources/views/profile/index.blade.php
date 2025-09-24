@@ -26,10 +26,10 @@
 <div class="user-info">
     <div class="user-info-inner">
         @php
-        $currentImage = optional(auth()->user())->profile_image ? asset('storage/' . auth()->user()->profile_image) : '';
+        $currentImage = optional(auth()->user())->profile_image ? asset('storage/' . optional(auth()->user())->profile_image) : '';
         @endphp
         <img class="profile__img" src="{{ $currentImage }}" alt="" />
-        <h1>{{ auth()->user()->name }}</h1>
+        <h1>{{ optional(auth()->user())->name }}</h1>
     </div>
     <form action="/mypage/profile" method="get">
         <button class="profile__img-button">　プロフィールを編集　　</button>
