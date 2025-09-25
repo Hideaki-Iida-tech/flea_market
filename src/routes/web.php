@@ -36,12 +36,12 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'index'])->where('item_id', '[0-9]+');
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->where('item_id', '[0-9]+');
+    Route::post('/purchase/{item_id}/payment/draft', [PurchaseController::class, 'savePaymentDraft'])->where('item_id', '[0-9]+');
     Route::get('/sell', function () {
         return view('items/create');
     });
-    Route::get('/purchase/address/{item_id}', function () {
-        return view('address/edit');
-    });
+    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'addressIndex'])->where('item_id', '[0-9]+');
+    Route::post('/purchase/address/{item_id}', [PurchaseController::class, 'addressUpdate'])->where('item_id', '[0-9]+');
     Route::post('/item/{item_id}/comment', [ItemController::class, 'commentCreate'])->where('item_id', '[0-9]+');
     Route::post('/item/{item_id}/like', [ItemController::class, 'toggle'])->where('item_id', '[0-9]+');
 });
