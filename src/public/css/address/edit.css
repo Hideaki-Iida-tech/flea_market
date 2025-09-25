@@ -79,6 +79,7 @@
     border-radius: 3px;
     font-size: 25px;
     border: none;
+    cursor: pointer;
 }
 .address__alert-danger {
     background: #ff0000;
