@@ -24,7 +24,8 @@
 @endsection
 @section('content')
 <div class="address__form">
-    <form action="" class="address__form-inner" method="post">
+    <form action="/purchase/address/{{ $item['id'] }}" class="address__form-inner" method="post">
+        @csrf
         <table class="address__form-table">
             <tr class="address__form-row-first">
                 <td>
@@ -35,7 +36,7 @@
                 <td>
                     <label class="address__form-label">
                         郵便番号<br />
-                        <input type="text" class="address__input" name="postal_code" />
+                        <input type="text" class="address__input" name="postal_code" value="{{ old('postal_code', $postal_code) }}" />
                     </label>
                     @if ($errors->has('postal_code'))
                     <div class="address__alert-danger">
@@ -50,7 +51,7 @@
             </tr>
             <tr class="address__form-row">
                 <td>
-                    <label class="address__form-label">住所<br /><input type="text" class="address__input" name="address" />
+                    <label class="address__form-label">住所<br /><input type="text" class="address__input" name="address" value="{{ old('address', $address) }}" />
                     </label>
                     @if ($errors->has('address'))
                     <div class="address__alert-danger">
@@ -65,7 +66,7 @@
             </tr>
             <tr class="address__form-row">
                 <td>
-                    <label class="address__form-label">建物名<br /><input type="text" class="address__input" name="building" /></label>
+                    <label class="address__form-label">建物名<br /><input type="text" class="address__input" name="building" value="{{ old('building', $building) }}" /></label>
                     @if ($errors->has('building'))
                     <div class="address__alert-danger">
                         <ul>
