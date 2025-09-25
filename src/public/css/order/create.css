@@ -31,9 +31,7 @@
 }
 
 /* 以下ヘッダー部CSS終わり */
-*{
-    border: 1px solid red;
-}
+
 .purchase__content {
     min-width: 1400px;
     max-width: 1540px;
@@ -117,14 +115,17 @@ hr {
     height: 60px;
     background: #ff0000;
     color: #ffffff;
+    border: none;
     border-radius: 3px;
     margin-top: 50px;
     cursor: pointer;
+    font-size: 20px;
 }
 .address__textarea {
     width: 100%;
     height: 100%;
     resize: none;
+    border: none;
 }
 .price-table-col {
     width: 40%;
@@ -132,4 +133,7 @@ hr {
 .order__alert-danger {
     background: #ff0000;
     color: #fff;
+}
+.price-table-row {
+    border: 1px solid #000;
 }

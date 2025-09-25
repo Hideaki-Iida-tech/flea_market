@@ -23,6 +23,7 @@
 </div>
 @endsection
 @section('content')
+
 <div class="purchase__content">
     <div class="purchase__setting">
         <div class="purchase__item">
@@ -52,10 +53,14 @@
         <div class="payment-method__title">
             支払い方法
         </div>
+        @php
+        // null のときは '' に倒す（未選択扱いを安定化）
+        $selectedPayment = old('payment_method',session("order_draft.{$item['id']}.payment_method"));
+        @endphp
         <select id="paymentSelect" class="payment-method__select" form="order-form" name="payment_method">
-            <option value="">選択してください</option>
+            <option value="" {{ $selectedPayment=='' ? 'selected' : '' }}>選択してください</option>
             @foreach($paymentLabels as $key => $value)
-            <option value="{{ $key }}">{{ $value }}</option>
+            <option value="{{ $key }}" {{ $selectedPayment==$key ? 'selected' : ''}}>{{ $value }}</option>
             @endforeach
         </select>
         @if ($errors->has('payment_method'))
@@ -73,12 +78,12 @@
                 配送先
             </div>
             <div class="address__edit">
-                <a href="/purchase/address/{{ $item['id'] }}}" class="address__edit--link">変更する</a>
+                <a href="/purchase/address/{{ $item['id'] }}" class="address__edit--link">変更する</a>
             </div>
         </div>
         <div class="address__content">
-            <textarea name="address" id="" class="address__textarea" readonly>〒 {{ $user->postal_code }}
-{{ $user->address }} {{ $user->building }}</textarea>
+            <textarea name="address" id="" class="address__textarea" readonly>〒 {{ $postal_code }}
+{{ $address }} {{ $building }}</textarea>
 
         </div>
         @if ($errors->has('address'))
@@ -94,13 +99,13 @@
     </div>
     <div class="purchase__confirm-submit">
         <table class=price__table>
-            <tr>
+            <tr class="price-table-row">
                 <th class="price-table-col">
                     商品代金
                 </th>
                 <td>¥{{ number_format($item['price']) }}</td>
             </tr>
-            <tr>
+            <tr class="price-table-row">
                 <th class="price-table-col">
                     支払い方法
                 </th>
@@ -117,9 +122,9 @@
             {{--<input type="hidden" name="user_id" value="{{ auth()->id() }}" />--}}
             {{--<input type="hidden" name="item_id" value="{{ $item['id'] }}" />--}}
             <input type="hidden" name="price" value="{{ $item['price'] }}" />
-            <input type="hidden" name="postal_code" value="{{ $user->postal_code }}" />
-            <input type="hidden" name="address" value="{{ $user->address }}" />
-            <input type="hidden" name="building" value="{{ $user->building }}" />
+            <input type="hidden" name="postal_code" value="{{ $postal_code }}" />
+            <input type="hidden" name="address" value="{{ $address }}" />
+            <input type="hidden" name="building" value="{{ $building }}" />
             <button class="purchase__button-submit">
                 購入する
             </button>
@@ -130,9 +135,28 @@
 <script>
     const select = document.getElementById('paymentSelect');
     const valueOutput = document.getElementById('selectedValue');
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    // 初期表示で同期
+    const initOpt = select.options[select.selectedIndex];
+    if (initOpt) valueOutput.textContent = initOpt.text;
+
     select.addEventListener('change', function() {
         const selectedOption = this.options[this.selectedIndex];
         valueOutput.textContent = selectedOption.text;
+    });
+
+    select.addEventListener('change', async function() {
+        await fetch("/purchase/{{$item['id']}}/payment/draft", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': token,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                payment_method: this.value
+            })
+        });
     });
 </script>
 @endsection
