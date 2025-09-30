@@ -24,7 +24,8 @@
 @endsection
 @section('content')
 <div class="sell__content">
-    <form action="">
+    <form action="/sell" method="post" enctype="multipart/form-data">
+        @csrf
         <div class="sell__title">
             <h1>商品の出品</h1>
         </div>
@@ -32,48 +33,40 @@
             商品画像
         </div>
         <div class="sell__image--content">
-            <img src="" alt="" class="sell__img" />
-            <input type="file" id="file-input" class="file-input" />
-            <label for="file-input" class="upload-button">画像を選択する</label>
+            @php
+            $currentPath = old('current_item_image');
+            $currentUrl = $currentPath ?: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGM4c+YMAATMAmU5mmUsAAAAAElFTkSuQmCC';
+            @endphp
+            <img id="itemPreview" src="{{ $currentUrl }}" alt="" class="sell__img" />
+            <input type="hidden" name="current_item_image" value="{{ $currentPath }}" />
+            <input id="fileInput" class="file-input" type="file" name="item_image" accept=".jpeg,.png" style="display:none" />
+            <label id="pickImageBtn" for="fileInput" class="upload-button">画像を選択する</label>
         </div>
+        @error('item_image')
+        <div class="sell__alert-danger">
+            <ul>
+                <li>{{ $message }}</li>
+            </ul>
+        </div>
+        @enderror
         <div class="sell__detail">
             <h2 class="sell__detail--title">商品の詳細</h2>
             <hr />
             <h3>カテゴリー</h3>
             <div class="chip-list">
-                <!--ループで量産-->
-                <input type="checkbox" id="cat-1" class="chip-input" name="categories[]" />
-                <label for="cat-1" class="chip">ファッション</label>
-                <input type="checkbox" id="cat-2" class="chip-input" name="categories[]" />
-                <label for="cat-2" class="chip">家電</label>
-                <input type="checkbox" id="cat-3" class="chip-input" name="categories[]" />
-                <label for="cat-3" class="chip">インテリア</label>
-                <input type="checkbox" id="cat-4" class="chip-input" name="categories[]" />
-                <label for="cat-4" class="chip">レディース</label>
-                <input type="checkbox" id="cat-5" class="chip-input">
-                <label for="cat-5" class="chip">メンズ</label>
-                <input type="checkbox" id="cat-6" class="chip-input" name="categories[]" />
-                <label for="cat-6" class="chip">コスメ</label>
-                <input type="checkbox" id="cat-7" class="chip-input" name="categories[]" />
-                <label for="cat-7" class="chip">本</label>
-                <input type="checkbox" id="cat-8" class="chip-input">
-                <label for="cat-8" class="chip">ゲーム</label>
-                <input type="checkbox" id="cat-9" class="chip-input" name="categories[]" />
-                <label for="cat-9" class="chip">スポーツ</label>
-                <input type="checkbox" id="cat-10" class="chip-input" name="categories[]" />
-                <label for="cat-10" class="chip">キッチン</label>
-                <input type="checkbox" id="cat-11" class="chip-input" name="categories[]" />
-                <label for="cat-11" class="chip">ハンドメイド</label>
-                <input type="checkbox" id="cat-12" class="chip-input" name="categories[]" />
-                <label for="cat-12" class="chip">アクセサリー</label>
-                <input type="checkbox" id="cat-13" class="chip-input" name="categories[]" />
-                <label for="cat-13" class="chip">おもちゃ</label>
-                <input type="checkbox" id="cat-14" class="chip-input" name="categories[]" />
-                <label for="cat-14" class="chip">ベビー・キッズ</label>
-                <!-- -->
+
+                @foreach($categories as $category)
+                <input type="checkbox" id="cat-{{ $category['id'] }}" class="chip-input" name="categories[]" value="{{ $category['id'] }}" {{ in_array($category['id'], old('categories',[])) ? 'checked' : '' }} />
+                <label for="cat-{{ $category['id'] }}" class="chip">{{ $category['name'] }}</label>
+                @endforeach
+
             </div>
             @error('categories')
-            <div class="sell__alert-danger">{{ $message }}</div>
+            <div class="sell__alert-danger">
+                <ul>
+                    <li>{{ $message }}</li>
+                </ul>
+            </div>
             @enderror
             @foreach($errors->get('categories.*') as $error)
             <div class="cell__alert-danger">
@@ -87,9 +80,9 @@
             <h3>商品の状態</h3>
             <select name="condition_id" class="sell__detail--condition">
                 <option value="0">選択してください</option>
-                <option value="1">目立った傷や汚れなし</option>
-                <option value="2">やや傷や汚れあり</option>
-                <option value="3">状態が悪い</option>
+                @foreach($conditions as $condition)
+                <option value="{{ $condition['id'] }}" {{ old('condition_id') == $condition['id'] ? 'selected' : ''}}>{{ $condition['name'] }}</option>
+                @endforeach
             </select>
             @if ($errors->has('condition_id'))
             <div class="sell__alert-danger">
@@ -105,7 +98,7 @@
             <h2 class="name-and-description__title">商品名と説明</h2>
             <hr />
             <h3>商品名</h3>
-            <input type="text" name="item_name" class="name-and-description__input" />
+            <input type="text" name="item_name" class="name-and-description__input" value="{{ old('item_name') }}" />
             @if ($errors->has('item_name'))
             <div class="sell__alert-danger">
                 <ul>
@@ -116,7 +109,7 @@
             </div>
             @endif
             <h3>ブランド名</h3>
-            <input type="text" name="brand" class="name-and-description__input" />
+            <input type="text" name="brand" class="name-and-description__input" value="{{ old('brand') }}" />
             @if ($errors->has('brand'))
             <div class="sell__alert-danger">
                 <ul>
@@ -127,7 +120,7 @@
             </div>
             @endif
             <h3>商品の説明</h3>
-            <textarea name="description" class="description"></textarea>
+            <textarea name="description" class="description">{{ old('description') }}</textarea>
             @if ($errors->has('description'))
             <div class="sell__alert-danger">
                 <ul>
@@ -140,7 +133,7 @@
             <h3>販売価格</h3>
             <div class="input-wrapper">
                 <span class="prefix">￥</span>
-                <input type="text" name="price" class="name-and-description__input" />
+                <input type="text" name="price" class="name-and-description__input" value="{{ old('price') }}" />
             </div>
             @if ($errors->has('price'))
             <div class="sell__alert-danger">
@@ -157,4 +150,40 @@
         </div>
     </form>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btn = document.getElementById('pickImageBtn');
+        const input = document.getElementById('fileInput');
+        const img = document.getElementById('itemPreview');
+
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            input.click();
+        });
+
+        input.addEventListener('change', function() {
+            const file = this.files && this.files[0];
+            if (!file) return;
+
+            // 拡張子＆MIMEの双方でチェック（どちらか片方だけだと穴があるため）
+            const allowExts = new Set(['jpeg', 'png']);
+            const allowMimes = new Set(['image/jpeg', 'image/png']);
+
+            const ext = (file.name.split('.').pop() || '').toLowerCase();
+            const ok = allowExts.has(ext) && allowMimes.has(file.type);
+
+            if (!ok) {
+                alert('JPEG(.jpeg)またはPNG(.png)のみ選択できます');
+                this.value = '';
+                //img.src = img.src;
+                return;
+            }
+
+            const url = URL.createObjectURL(file);
+            img.src = url;
+            img.onload = () => URL.revokeObjectURL(url);
+            img.onerror = () => URL.revokeObjectURL(url);
+        });
+    });
+</script>
 @endsection

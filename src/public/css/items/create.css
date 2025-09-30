@@ -53,7 +53,7 @@
 }
 .sell__img {
     width: 100%;
-    height: auto;
+    height: 160px;
     border-radius: 6px;
 }
 .file-input {
@@ -200,4 +200,8 @@ hr {
     border: none;
     font-size: 20px;
     cursor: pointer;
+}
+.sell__alert-danger {
+    background: #f00;
+    color :#fff;
 }
