@@ -23,6 +23,7 @@ class ExhibitionRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             //
             'item_name' => ['required', 'string'],
@@ -30,9 +31,10 @@ class ExhibitionRequest extends FormRequest
             'item_image' => ['required', 'file', 'mimes:jpeg,png'],
             //複数選択可能 最低一つは必須
             'categories' => ['required', 'array', 'min:1'],
-            //'categories.*' => ['integer', 'exists:caetgories,id'],
+            'categories.*' => ['integer', 'exists:categories,id'],
             //データベースの値を参照して設定
-            //'condition_id' => ['required', 'integer', 'exists:conditions,id'],
+            'condition_id' => ['required', 'integer', 'exists:conditions,id', 'min:1'],
+            'brand' => ['sometimes', 'nullable', 'string'],
             'price' => ['required', 'integer', 'min:0'],
         ];
     }
@@ -51,6 +53,9 @@ class ExhibitionRequest extends FormRequest
             'categories.min' => '最低一つは選択してください',
             'categories.*.integer' => '不正な値が含まれています',
             'categories.*.exists' => '選択されたカテゴリーが存在しません',
+            'condition_id.required' => '商品の状態を選択してください',
+            'condition_id.exists' => '商品の状態を選択してください',
+            'condition_id.min' => '商品の状態を選択してください',
         ];
     }
 }
