@@ -60,7 +60,7 @@
     @if(empty(auth()->id()) || (auth()->id() !== $item->user_id) || $mylist)
 
     <div class="items__image">
-        <a href="/item/{{ $item['id'] }}">
+        <a href="/item/{{ $item->id }}">
             <img src="{{ $item->image_url }}" alt="商品画像" class="items__image-content" />
             <div>
                 {{ $item->item_name }}
