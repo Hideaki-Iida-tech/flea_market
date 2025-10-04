@@ -17,10 +17,27 @@ use Illuminate\Support\Facades\Storage;
 class ItemController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
-        $items = Item::with('order')->get();
-        return view('items/index', compact('items'));
+        $mylist = $request->tab === 'mylist';
+        $keyword = $request->input('keyword');
+
+        if ($mylist) {
+
+            $items = Item::with(['order', 'likes' => fn($query) => $query->where('users.id', auth()->id())])->whereHas('likes', fn($query) => $query->where('users.id', auth()->id()));
+        } else {
+            $items = Item::with('order');
+        }
+        if ($keyword) {
+
+            $items = $items->KeywordSearch($keyword);
+        }
+        $items = $items->get();
+
+        $query = $request->only('keyword');
+        $base = url('/');
+
+        return view('items/index', compact('items', 'mylist', 'keyword', 'query', 'base'));
     }
     public function show($item_id)
     {
