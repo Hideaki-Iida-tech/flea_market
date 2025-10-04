@@ -6,11 +6,21 @@
 商品一覧画面
 @endsection
 @section('input')
-<input type="text" class="header__search" placeholder="何をお探しですか？" />
+<form id="search-form" action="/" method="get">
+    <input type="text" id="search-box" name="keyword" class="header__search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
+</form>
+<script>
+    document.getElementById('search-box').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            document.getElementById('search-form').submit();
+        }
+    });
+</script>
 @endsection
 @section('button')
 @if(Auth::check())
-<div class="header__button">
+<div class=" header__button">
     <form action="/logout" method="post">
         @csrf
         <button class="header__button-logout">ログアウト</button>
@@ -38,29 +48,22 @@
 @endif
 @endsection
 @section('content')
+
 <div class="items__menu">
-    <a href="/">おすすめ</a>　　　　　<a href="/?tab=mylist" class="item__menu-link">マイリスト</a>
+
+    <a href="{{ $query ? $base . '?' . http_build_query($query) : $base }}">おすすめ</a>　　　　　<a href="{{ $base . '?' . http_build_query(array_merge(['tab' => 'mylist'], $query)) }}" class="item__menu-link">マイリスト</a>
 </div>
 <hr />
 <div class="items__content">
 
     @foreach($items as $item)
-    @if(empty(auth()->id()) || (auth()->id() !== $item['user_id']))
-    @php
-    if(str_starts_with($item['item_image'],'https://')){
-    $currentImage = $item['item_image'];
-    }
-    elseif($item['item_image']){
-    $currentImage = asset('storage/' . $item['item_image']);
-    }else{
-    $currentImage = '';
-    }
-    @endphp
+    @if(empty(auth()->id()) || (auth()->id() !== $item->user_id) || $mylist)
+
     <div class="items__image">
         <a href="/item/{{ $item['id'] }}">
-            <img src="{{ $currentImage }}" alt="商品画像" class="items__image-content" />
+            <img src="{{ $item->image_url }}" alt="商品画像" class="items__image-content" />
             <div>
-                {{ $item['item_name'] }}
+                {{ $item->item_name }}
                 @if($item->order)
                 <span class="sold">Sold</span>
                 @endif

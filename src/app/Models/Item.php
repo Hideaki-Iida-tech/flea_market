@@ -10,6 +10,14 @@ class Item extends Model
     use HasFactory;
 
     protected $fillable = ['item_image', 'condition_id', 'item_name', 'brand', 'description', 'price', 'user_id'];
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute()
+    {
+        if (!$this->item_image) return '';
+        if (str_starts_with($this->item_image, 'https://')) return $this->item_image;
+        return asset('storage/' . $this->item_image);
+    }
 
     public function order()
     {
@@ -26,5 +34,11 @@ class Item extends Model
     public function likes()
     {
         return $this->belongsToMany('\App\Models\User', 'item_likes')->withTimeStamps();
+    }
+    public function scopeKeywordSearch($query, $keyword)
+    {
+        if (!empty($keyword)) {
+            $query->where('item_name', 'like', '%' . $keyword . '%');
+        }
     }
 }
