@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Condition;
 use App\Http\Requests\CommentRequest;
 use App\Http\Requests\ExhibitionRequest;
+use App\Http\Requests\LikeRequest;
 use App\Models\Comment;
 use App\Models\Order;
 use App\Models\Category;
@@ -48,16 +49,20 @@ class ItemController extends Controller
     }
     public function commentCreate(CommentRequest $request, $item_id)
     {
-        $form = $request->all();
-        $form['user_id'] = auth()->id();
-        $form['item_id'] = $item_id;
-        Comment::create($form);
+        $validatedValue = $request->validated();
+        $item_id = $validatedValue['item_id'];
+
+        $validatedValue['user_id'] = auth()->id();
+        $validatedValue['item_id'] = $item_id;
+        Comment::create($validatedValue);
         return redirect('/item/' . $item_id);
     }
-    public function toggle($item_id, Request $request)
+    public function toggle($item_id, LikeRequest $request)
     {
+        $validatedValue = $request->validated();
+        $item_id = $validatedValue['item_id'];
         $user = $request->user();
-        $item = Item::find($item_id);
+        $item = Item::findOrFail($item_id);
         if ($item->likes()->where('user_id', $user->id)->exists()) {
             $item->likes()->detach($user->id);
         } else {
