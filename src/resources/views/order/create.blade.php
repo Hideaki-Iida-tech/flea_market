@@ -37,25 +37,15 @@
 <div class="purchase__content">
     <div class="purchase__setting">
         <div class="purchase__item">
-            @php
-            if(str_starts_with($item['item_image'],'https://')){
-            $currentImage = $item['item_image'];
-            }
-            elseif($item['item_image']){
-            $currentImage = asset('storage/' . $item['item_image']);
-            }else{
-            $currentImage = '';
-            }
-            @endphp
             <div class="item__image">
-                <img src="{{ $currentImage }}" alt="商品画像" class="item__img">
+                <img src="{{ $item->image_url }}" alt="商品画像" class="item__img">
             </div>
             <div>
                 <div class="item__name">
-                    {{ $item['item_name'] }}
+                    {{ $item->item_name }}
                 </div>
                 <div class="price-info">
-                    ¥{{ number_format($item['price']) }}
+                    ¥{{ number_format($item->price) }}
                 </div>
             </div>
         </div>
@@ -65,7 +55,7 @@
         </div>
         @php
         // null のときは '' に倒す（未選択扱いを安定化）
-        $selectedPayment = old('payment_method',session("order_draft.{$item['id']}.payment_method"));
+        $selectedPayment = old('payment_method',session("order_draft.{$item->id}.payment_method")) ?? '';
         @endphp
         <select id="paymentSelect" class="payment-method__select" form="order-form" name="payment_method">
             <option value="" {{ $selectedPayment=='' ? 'selected' : '' }}>選択してください</option>
@@ -88,7 +78,7 @@
                 配送先
             </div>
             <div class="address__edit">
-                <a href="/purchase/address/{{ $item['id'] }}" class="address__edit--link">変更する</a>
+                <a href="/purchase/address/{{ $item->id }}" class="address__edit--link">変更する</a>
             </div>
         </div>
         <div class="address__content">
@@ -113,7 +103,7 @@
                 <th class="price-table-col">
                     商品代金
                 </th>
-                <td>¥{{ number_format($item['price']) }}</td>
+                <td>¥{{ number_format($item->price) }}</td>
             </tr>
             <tr class="price-table-row">
                 <th class="price-table-col">
@@ -127,11 +117,11 @@
             </tr>
         </table>
         @if(!$sold)
-        <form id="order-form" action="/purchase/{{$item['id']}}" method="post">
+        <form id="order-form" action="/purchase/{{$item->id}}" method="post">
             @csrf
             {{--<input type="hidden" name="user_id" value="{{ auth()->id() }}" />--}}
-            {{--<input type="hidden" name="item_id" value="{{ $item['id'] }}" />--}}
-            <input type="hidden" name="price" value="{{ $item['price'] }}" />
+            {{--<input type="hidden" name="item_id" value="{{ $item->id }}" />--}}
+            <input type="hidden" name="price" value="{{ $item->price }}" />
             <input type="hidden" name="postal_code" value="{{ $postal_code }}" />
             <input type="hidden" name="address" value="{{ $address }}" />
             <input type="hidden" name="building" value="{{ $building }}" />
@@ -157,7 +147,7 @@
     });
 
     select.addEventListener('change', async function() {
-        await fetch("/purchase/{{$item['id']}}/payment/draft", {
+        await fetch("/purchase/{{$item->id}}/payment/draft", {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': token,
