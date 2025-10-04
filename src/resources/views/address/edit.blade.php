@@ -34,7 +34,7 @@
 @endsection
 @section('content')
 <div class="address__form">
-    <form action="/purchase/address/{{ $item['id'] }}" class="address__form-inner" method="post">
+    <form action="/purchase/address/{{ $item->id }}" class="address__form-inner" method="post">
         @csrf
         <table class="address__form-table">
             <tr class="address__form-row-first">
