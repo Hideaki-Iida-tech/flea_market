@@ -13,7 +13,8 @@ use App\Models\Order;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class ItemController extends Controller
 {
@@ -83,15 +84,24 @@ class ItemController extends Controller
         $data['user_id'] = auth()->id();
         $categories = $request->input('categories', []);
 
+        // hidden から一時パスを取得
+        $tmpPath = $request->input('current_item_image');
+        $finalPath = null;
+
         DB::beginTransaction();
         try {
 
+            if ($tmpPath) {
+                if (!str_starts_with($tmpPath, 'tmp/items/')) {
+                    abort(422, 'Invalid temporary path');
+                }
 
-            if ($request->hasFile('item_image')) {
-                $path = $request->file('item_image')->store('items', 'public');
-                $data['item_image'] = $path;
+                $ext = pathinfo($tmpPath, PATHINFO_EXTENSION);
+                $finalPath = 'items/' . Str::uuid() . ($ext ? ".{$ext}" : '');
+
+                Storage::disk('public')->move($tmpPath, $finalPath);
+                $data['item_image'] = $finalPath;
             }
-
             $item = Item::create($data);
             /*foreach ($categories as $key => $category) {
                 DB::table('category_item')->insert([
@@ -105,12 +115,14 @@ class ItemController extends Controller
 
             DB::commit();
         } catch (\Exception $e) {
+
             DB::rollback();
-            if ($data['item_image']) {
-                Storage::disk('public')->delete($data['item_image']);
+            // もしすでに items/ へ移動していたら掃除
+            if ($finalPath && Storage::disk('public')->exists($finalPath)) {
+                Storage::disk('public')->delete($finalPath);
             }
             report($e);
-            return back();
+            return back()->withInput();
         }
         return redirect('/');
     }
