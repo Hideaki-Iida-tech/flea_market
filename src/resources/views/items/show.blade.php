@@ -50,34 +50,24 @@
 @section('content')
 <div class="items__content">
     <div class="items__image">
-        @php
-        if(str_starts_with($item['item_image'],'https://')){
-        $currentImage = $item['item_image'];
-        }
-        elseif($item['item_image']){
-        $currentImage = asset('storage/' . $item['item_image']);
-        }else{
-        $currentImage = '';
-        }
-        @endphp
-        <img src="{{ $currentImage }}" alt="商品画像" class="items__img" />
+        <img src="{{ $item->image_url }}" alt="商品画像" class="items__img" />
     </div>
     <div class="items__detail">
         <h1 class="item__name">
-            {{ $item['item_name'] }}
+            {{ $item->item_name }}
         </h1>
         <div class="brand">
-            {{ $item['brand'] }}
+            {{ $item->brand }}
         </div>
         <div class="price">
-            ¥<span class="price__font">{{ number_format($item['price']) }}</span>（税込）
+            ¥<span class="price__font">{{ number_format($item->price) }}</span>（税込）
         </div>
         <div class="icons">
 
 
             <div class="like">
                 @if(Auth::check())
-                <form action="/item/{{$item['id']}}/like" method="post">
+                <form action="/item/{{$item->id}}/like" method="post">
                     @csrf
                     <button type="submit" class="like-button">
                         @if($item->likes->contains(auth()->id()))
@@ -88,7 +78,7 @@
                     </button>
                 </form>
                 @else
-                <form id="like-form" action="/item/{{$item['id']}}/like" method="post">
+                <form id="like-form" action="/item/{{$item->id}}/like" method="post">
                     @csrf
                     <button type="submit" class="like-button">
                         @if($item->likes->contains(auth()->id()))
@@ -113,18 +103,18 @@
         </div>
         @if(!$sold)
         @if(Auth::check())
-        <form action="/purchase/{{ $item['id'] }}" class="form__purchase" method="get">
+        <form action="/purchase/{{ $item->id }}" class="form__purchase" method="get">
             <button class="form__purchase-submit">購入手続きへ</button>
         </form>
         @else
-        <form id="purchase-form" action="/purchase/{{ $item['id'] }}" class="form__purchase" method="get">
+        <form id="purchase-form" action="/purchase/{{ $item->id }}" class="form__purchase" method="get">
             <button class="form__purchase-submit">購入手続きへ</button>
         </form>
         @endif
         @endif
         <h2>商品説明</h2>
         <div class="description">
-            {{ $item['description'] }}
+            {{ $item->description }}
         </div>
         <h2>商品の情報</h2>
         <table>
@@ -165,7 +155,7 @@
             @endforeach
         </div>
         @if(Auth::check())
-        <form action="/item/{{ $item['id'] }}/comment" class="comment__edit" method="post">
+        <form action="/item/{{ $item->id }}/comment" class="comment__edit" method="post">
             @csrf
             <h3>商品へのコメント</h3>
             <textarea name="body" id="" class="comment__body">{{ old('body')}}</textarea>
@@ -184,7 +174,7 @@
             </button>
         </form>
         @else
-        <form id="comment-form" action="/item/{{ $item['id'] }}/comment" class="comment__edit" method="post">
+        <form id="comment-form" action="/item/{{ $item->id }}/comment" class="comment__edit" method="post">
             @csrf
             <h3>商品へのコメント</h3>
             <textarea name="body" id="" class="comment__body">{{ old('body')}}</textarea>
