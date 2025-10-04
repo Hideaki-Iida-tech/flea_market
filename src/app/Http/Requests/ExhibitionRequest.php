@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Contracts\Validation\Validator;
 
 class ExhibitionRequest extends FormRequest
 {
@@ -14,6 +16,25 @@ class ExhibitionRequest extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator): void
+    {
+        //parent::failedValidation($validator); // ← 標準のリダイレクト（old付き）
+        $response = redirect()->to($this->getRedirectUrl())
+            ->withInput($this->all())              // ← PFV後の全入力を明示的にフラッシュ
+            ->withErrors($validator, $this->errorBag);
+
+        throw new \Illuminate\Validation\ValidationException($validator, $response);
+    }
+
+    protected function prepareForValidation()
+    {
+        // 画像が送られてきたら、 tmp に保存して、そのパスを hidden 用に差し込む
+        if ($this->hasFile('item_image')) {
+            $tmpPath = $this->file('item_image')->store('tmp/items', 'public');
+            $this->merge(['current_item_image' => $tmpPath]);
+        }
     }
 
     /**
@@ -28,7 +49,17 @@ class ExhibitionRequest extends FormRequest
             //
             'item_name' => ['required', 'string'],
             'description' => ['required', 'max:255'],
-            'item_image' => ['required', 'file', 'mimes:jpeg,png'],
+            'item_image' => ['nullable', 'image', 'mimes:jpeg,png', 'max:2048'],
+            'current_item_image' => [
+                'nullable',
+                'string',
+                function ($attribute, $value, $fail) {
+                    // 画像ファイルも hidden もどちらも空ならエラー
+                    if (!$this->hasFile('item_image') && empty($value)) {
+                        $fail('商品画像を指定してください');
+                    }
+                },
+            ],
             //複数選択可能 最低一つは必須
             'categories' => ['required', 'array', 'min:1'],
             'categories.*' => ['integer', 'exists:categories,id'],
@@ -57,5 +88,16 @@ class ExhibitionRequest extends FormRequest
             'condition_id.exists' => '商品の状態を選択してください',
             'condition_id.min' => '商品の状態を選択してください',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+
+            if (!$this->hasFile('item_image') && !$this->filled('current_item_image')) {
+                // どちらも空ならエラー
+                $validator->errors()->add('item_image', '商品画像を指定してください');
+            }
+        });
     }
 }
