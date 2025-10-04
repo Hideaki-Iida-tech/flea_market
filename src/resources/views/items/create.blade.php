@@ -6,7 +6,17 @@
 商品出品画面
 @endsection
 @section('input')
-<input type="text" class="header__search" placeholder="何をお探しですか？" />
+<form id="search-form" action="/" method="get">
+    <input type="text" id="search-box" name="keyword" class="header__search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
+</form>
+<script>
+    document.getElementById('search-box').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            document.getElementById('search-form').submit();
+        }
+    });
+</script>
 @endsection
 @section('button')
 <div class="header__button">
