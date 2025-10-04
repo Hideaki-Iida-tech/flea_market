@@ -45,7 +45,7 @@
         <div class="sell__image--content">
             @php
             $currentPath = old('current_item_image');
-            $currentUrl = $currentPath ?: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGM4c+YMAATMAmU5mmUsAAAAAElFTkSuQmCC';
+            $currentUrl = $currentPath ? Storage::url($currentPath) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGM4c+YMAATMAmU5mmUsAAAAAElFTkSuQmCC';
             @endphp
             <img id="itemPreview" src="{{ $currentUrl }}" alt="" class="sell__img" />
             <input type="hidden" name="current_item_image" value="{{ $currentPath }}" />
@@ -79,7 +79,7 @@
             </div>
             @enderror
             @foreach($errors->get('categories.*') as $error)
-            <div class="cell__alert-danger">
+            <div class="sell__alert-danger">
                 <ul>
                     @foreach ($error as $message)
                     <li>{{ $message }}</li>
