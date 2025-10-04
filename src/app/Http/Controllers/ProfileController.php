@@ -6,9 +6,24 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\Item;
 
 class ProfileController extends Controller
 {
+    public function index(Request $request)
+    {
+        $isSell = $request->page === 'sell';
+        $isBuy = $request->page === 'buy';
+        $items = null;
+
+        if ($isSell) {
+            $items = Item::where('user_id', auth()->id())->get();
+        } elseif ($isBuy) {
+            $items = Item::whereHas('order', fn($query) => $query->where('user_id', auth()->id()))->with(['order' => fn($query) => $query->where('user_id', auth()->id())])->get();
+        }
+        return view('profile.index', compact('items'));
+    }
+
     // プロフィール編集画面の表示アクションメソッド
     public function edit()
     {
@@ -26,34 +41,23 @@ class ProfileController extends Controller
         $tmpPath = $request->input('current_profile_image');
         $finalPath = null;
 
-
         if ($tmpPath) {
-            if (!str_starts_with($tmpPath, 'tmp/profiles/')) {
+            if (str_starts_with($tmpPath, 'tmp/profiles/')) {
+                $ext = pathinfo($tmpPath, PATHINFO_EXTENSION);
+                $finalPath = 'profiles/' . Str::uuid() . ($ext ? ".{$ext}" : '');
+
+                Storage::disk('public')->move($tmpPath, $finalPath);
+                if ($user->profile_image) {
+                    Storage::disk('public')->delete($user->profile_image);
+                }
+                $data['profile_image'] = $finalPath;
+            } elseif (str_starts_with($tmpPath, 'profiles/')) {
+                $data['profile_image'] = $tmpPath;
+            } else {
                 abort(422, 'Invalid temporary path');
             }
-
-            $ext = pathinfo($tmpPath, PATHINFO_EXTENSION);
-            $finalPath = 'items/' . Str::uuid() . ($ext ? ".{$ext}" : '');
-
-            Storage::disk('public')->move($tmpPath, $finalPath);
-            if ($user->profile_image) {
-                Storage::disk('public')->delete($user->profile_image);
-            }
-            $data['profile_image'] = $finalPath;
         }
 
-        /*// 画像が選択させている場合は保存
-        if ($request->hasFile('profile_image')) {
-            // 旧ファイルを削除
-            if ($user->profile_image) {
-                Storage::disk('public')->delete($user->profile_image);
-            }
-            // publicディスクに保存
-            $path = $request->file('profile_image')->store('profiles', 'public');
-            // DBには'profiles/xxx.jpeg'を保存
-            $data['profile_image'] = $path;
-        }*/
-        //$data['is_profile_completed'] = true;
         $user->update($data);
         return redirect('/mypage');
     }
