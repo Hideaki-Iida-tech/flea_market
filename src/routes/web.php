@@ -31,9 +31,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/mypage/profile', [ProfileController::class, 'edit']);
     Route::post('/mypage/profile', [ProfileController::class, 'update']);
-    Route::get('/mypage', function () {
-        return view('profile/index');
-    });
+    Route::get('/mypage', [ProfileController::class, 'index']);
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'index'])->where('item_id', '[0-9]+');
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->where('item_id', '[0-9]+');
     Route::post('/purchase/{item_id}/payment/draft', [PurchaseController::class, 'savePaymentDraft'])->where('item_id', '[0-9]+');

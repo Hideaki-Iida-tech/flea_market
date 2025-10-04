@@ -50,45 +50,13 @@
 </div>
 <hr />
 <div class="profile__content">
+    @if(!empty($items))
+    @foreach($items as $item)
     <div class="profile__image">
-        <img src="" alt="商品画像" class="profile__image-content" /><br />
-        商品名
+        <img src="{{ $item->image_url }}" alt="商品画像" class="profile__image-content" /><br />
+        {{ $item->item_name }}
     </div>
-    <div class="profile__image">
-        <img src="" alt="商品画像" class="profile__image-content" /><br />
-        商品名
-    </div>
-    <div class="profile__image">
-        <img src="" alt="商品画像" class="profile__image-content" /><br />
-        商品名
-    </div>
-    <div class="profile__image">
-        <img src="" alt="商品画像" class="profile__image-content" /><br />
-        商品名
-    </div>
-    <div class="profile__image">
-        <img src="" alt="商品画像" class="profile__image-content" /><br />
-        商品名
-    </div>
-    <div class="profile__image">
-        <img src="" alt="商品画像" class="profile__image-content" /><br />
-        商品名
-    </div>
-    <div class="profile__image">
-        <img src="" alt="商品画像" class="profile__image-content" /><br />
-        商品名
-    </div>
-    <div class="profile__image">
-        <img src="" alt="商品画像" class="profile__image-content" /><br />
-        商品名
-    </div>
-    <div class="profile__image">
-        <img src="" alt="商品画像" class="profile__image-content" /><br />
-        商品名
-    </div>
-    <div class="profile__image">
-        <img src="" alt="商品画像" class="profile__image-content" /><br />
-        商品名
-    </div>
+    @endforeach
+    @endif
 </div>
 @endsection
