@@ -46,8 +46,6 @@ Route::middleware('auth')->group(function () {
 });
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->where('item_id', '[0-9]+');
 
-
-
 /*Route::get('/mypage', function () {
     return view('profile/index');
 });*/
