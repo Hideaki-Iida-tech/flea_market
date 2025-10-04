@@ -16,6 +16,16 @@ class ProfileRequest extends FormRequest
         return true;
     }
 
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator): void
+    {
+        //parent::failedValidation($validator); // ← 標準のリダイレクト（old付き）
+        $response = redirect()->to($this->getRedirectUrl())
+            ->withInput($this->all())              // ← PFV後の全入力を明示的にフラッシュ
+            ->withErrors($validator, $this->errorBag);
+
+        throw new \Illuminate\Validation\ValidationException($validator, $response);
+    }
+
     protected function prepareForValidation()
     {
 
@@ -35,7 +45,14 @@ class ProfileRequest extends FormRequest
                 filled($this->postal_code) &&
                 filled($this->address),
         ]);
+
+        // 画像が送られてきたら、 tmp に保存して、そのパスを hidden 用に差し込む
+        if ($this->hasFile('profile_image')) {
+            $tmpPath = $this->file('profile_image')->store('tmp/profiles', 'public');
+            $this->merge(['current_profile_image' => $tmpPath]);
+        }
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -43,12 +60,13 @@ class ProfileRequest extends FormRequest
      */
     public function rules()
     {
-        $hasImage = filled(optional($this->user())->profile_image);
+        //$hasImage = filled(optional($this->user())->profile_image);
         return [
             //
 
             'profile_image' => [
-                $hasImage ? 'nullable' : 'required',
+                //$hasImage ? 'nullable' : 'required',
+                'nullable',
                 'image',
                 'mimes:jpeg,png',
                 'max:2048',
@@ -84,5 +102,16 @@ class ProfileRequest extends FormRequest
             'postal_code.regex' => '数字7桁ハイフン1の形式で郵便番号を入力してください',
             'address.required' => '住所を入力してください',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+
+            if (!$this->hasFile('profile_image') && !$this->filled('current_profile_image')) {
+                // どちらも空ならエラー
+                $validator->errors()->add('profile_image', '商品画像を指定してください');
+            }
+        });
     }
 }
