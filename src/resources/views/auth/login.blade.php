@@ -6,21 +6,21 @@
 ログイン画面
 @endsection
 @section('content')
-<div class="login__form">
-    <form action="/login" class="login__form-inner" method="post" novalidate>
+<div class="login-form">
+    <form action="/login" class="login-form-inner" method="post" novalidate>
         @csrf
-        <table class="login__form-table">
-            <tr class="login__form-row-first">
+        <table class="login-form-table">
+            <tr class="login-form-row-first">
                 <td>
                     <h1>ログイン</h1>
                 </td>
             </tr>
-            <tr class="login__form-row">
+            <tr class="login-form-row">
                 <td>
-                    <label class="login__form-label">メールアドレス<br /><input type="email" class="login__input" name="email" value="{{ old('email') }}" />
+                    <label class="login-form-label">メールアドレス<br /><input type="email" class="login-input" name="email" value="{{ old('email') }}" />
                     </label>
                     @if ($errors->has('email'))
-                    <div class="login__alert-danger">
+                    <div class="login-alert-danger">
                         <ul>
                             @foreach ($errors->get('email') as $error)
                             <li>{{ $error }}</li>
@@ -30,11 +30,11 @@
                     @endif
                 </td>
             </tr>
-            <tr class="login__form-row">
+            <tr class="login-form-row">
                 <td>
-                    <label class="login__form-label">パスワード<br /><input type="password" class="login__input" name="password" /></label>
+                    <label class="login-form-label">パスワード<br /><input type="password" class="login-input" name="password" /></label>
                     @if ($errors->has('password'))
-                    <div class="login__alert-danger">
+                    <div class="login-alert-danger">
                         <ul>
                             @foreach ($errors->get('password') as $error)
                             <li>{{ $error }}</li>
@@ -44,14 +44,14 @@
                     @endif
                 </td>
             </tr>
-            <tr class="login__form-row">
-                <td class="login__form-col-button">
-                    <button type="submit" class="login__button">ログインする<br /></button>
+            <tr class="login-form-row">
+                <td class="login-form-col-button">
+                    <button type="submit" class="login-button">ログインする<br /></button>
                 </td>
             </tr>
-            <tr class="login__form-row-last">
-                <td class="login__form-col-link">
-                    <a href="/register" class="login__form-link">会員登録はこちら</a>
+            <tr class="login-form-row-last">
+                <td class="login-form-col-link">
+                    <a href="/register" class="login-form-link">会員登録はこちら</a>
                 </td>
             </tr>
         </table>

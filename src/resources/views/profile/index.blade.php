@@ -7,7 +7,7 @@
 @endsection
 @section('input')
 <form id="search-form" action="/" method="get">
-    <input type="text" id="search-box" name="keyword" class="header__search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
+    <input type="text" id="search-box" name="keyword" class="header-search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
 </form>
 <script>
     document.getElementById('search-box').addEventListener('keydown', function(e) {
@@ -19,16 +19,16 @@
 </script>
 @endsection
 @section('button')
-<div class="header__button">
+<div class="header-button">
     <form action="/logout" method="post">
         @csrf
-        <button class="header__button-logout">ログアウト</button>
+        <button class="header-button-logout">ログアウト</button>
     </form>
     <form action="/mypage" method="get">
-        <button class="header__button-mypage">マイページ</button>
+        <button class="header-button-mypage">マイページ</button>
     </form>
     <form action="/sell" method="get">
-        <button class="header__button-sell">出品</button>
+        <button class="header-button-sell">出品</button>
     </form>
 </div>
 @endsection
@@ -38,22 +38,22 @@
         @php
         $currentImage = optional(auth()->user())->profile_image ? asset('storage/' . optional(auth()->user())->profile_image) : '';
         @endphp
-        <img class="profile__img" src="{{ $currentImage }}" alt="" />
+        <img class="profile-img" src="{{ $currentImage }}" alt="" />
         <h1>{{ optional(auth()->user())->name }}</h1>
     </div>
     <form action="/mypage/profile" method="get">
-        <button class="profile__img-button">　プロフィールを編集　　</button>
+        <button class="profile-img-button">　プロフィールを編集　　</button>
     </form>
 </div>
-<div class="profile__menu">
-    <a href="/mypage?page=sell" class="profile__menu-link">出品した商品</a>　　　　　<a href="/mypage?page=buy">購入した商品</a>
+<div class="profile-menu">
+    <a href="/mypage?page=sell" class="profile-menu-link">出品した商品</a>　　　　　<a href="/mypage?page=buy">購入した商品</a>
 </div>
 <hr />
-<div class="profile__content">
+<div class="profile-content">
     @if(!empty($items))
     @foreach($items as $item)
-    <div class="profile__image">
-        <img src="{{ $item->image_url }}" alt="商品画像" class="profile__image-content" /><br />
+    <div class="profile-image">
+        <img src="{{ $item->image_url }}" alt="商品画像" class="profile-image-content" /><br />
         {{ $item->item_name }}
     </div>
     @endforeach

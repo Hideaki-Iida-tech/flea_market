@@ -7,7 +7,7 @@
 @endsection
 @section('input')
 <form id="search-form" action="/" method="get">
-    <input type="text" id="search-box" name="keyword" class="header__search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
+    <input type="text" id="search-box" name="keyword" class="header-search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
 </form>
 <script>
     document.getElementById('search-box').addEventListener('keydown', function(e) {
@@ -19,26 +19,26 @@
 </script>
 @endsection
 @section('button')
-<div class="header__button">
+<div class="header-button">
     <form action="/logout" method="post">
         @csrf
-        <button class="header__button-logout">ログアウト</button>
+        <button class="header-button-logout">ログアウト</button>
     </form>
     <form action="/mypage" method="get">
-        <button class="header__button-mypage">マイページ</button>
+        <button class="header-button-mypage">マイページ</button>
     </form>
     <form action="/sell" method="get">
-        <button class="header__button-sell">出品</button>
+        <button class="header-button-sell">出品</button>
     </form>
 </div>
 @endsection
 
 @section('content')
-<div class="profile__form">
-    <form action="/mypage/profile" class="profile__form-inner" method="post" enctype="multipart/form-data">
+<div class="profile-form">
+    <form action="/mypage/profile" class="profile-form-inner" method="post" enctype="multipart/form-data">
         @csrf
-        <table class="profile__form-table">
-            <tr class="profile__form-row-first">
+        <table class="profile-form-table">
+            <tr class="profile-form-row-first">
                 <td>
                     <h1>プロフィール設定</h1>
                 </td>
@@ -49,12 +49,12 @@
                     $currentPath = old('current_profile_image',optional(auth()->user())->profile_image);
                     $currentUrl = $currentPath ? Storage::disk('public')->url($currentPath) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGM4c+YMAATMAmU5mmUsAAAAAElFTkSuQmCC'
                     @endphp
-                    <img id="profilePreview" class="profile__img" src="{{ $currentUrl }}" alt="プロフィール画像" />
+                    <img id="profilePreview" class="profile-img" src="{{ $currentUrl }}" alt="プロフィール画像" />
                     <input type="hidden" name="current_profile_image" value="{{ $currentPath }}" />
-                    <button id="pickImageBtn" type="button" class="profile__img-button">画像を選択する</button>
+                    <button id="pickImageBtn" type="button" class="profile-img-button">画像を選択する</button>
                     <input id="profileImageInput" type="file" name="profile_image" accept=".jpeg,.png" style="display:none" />
                     @if ($errors->has('profile_image'))
-                    <div class="profile__alert-danger">
+                    <div class="profile-alert-danger">
                         <ul>
                             @foreach ($errors->get('profile_image') as $error)
                             <li>{{ $error }}</li>
@@ -64,14 +64,14 @@
                     @endif
                 </td>
             </tr>
-            <tr class="profile__form-row">
+            <tr class="profile-form-row">
                 <td>
-                    <label class="profile__form-label">
+                    <label class="profile-form-label">
                         ユーザー名<br />
-                        <input type="text" class="profile__input" name="name" value="{{ old('name',optional(auth()->user())->name) }}" />
+                        <input type="text" class="profile-input" name="name" value="{{ old('name',optional(auth()->user())->name) }}" />
                     </label>
                     @if ($errors->has('name'))
-                    <div class="profile__alert-danger">
+                    <div class="profile-alert-danger">
                         <ul>
                             @foreach ($errors->get('name') as $error)
                             <li>{{ $error }}</li>
@@ -81,12 +81,12 @@
                     @endif
                 </td>
             </tr>
-            <tr class="profile__form-row">
+            <tr class="profile-form-row">
                 <td>
-                    <label class="profile__form-label">郵便番号<br /><input type="text" class="profile__input" name="postal_code" value="{{ old('postal_code',auth()->user()->postal_code) }}" />
+                    <label class="profile-form-label">郵便番号<br /><input type="text" class="profile-input" name="postal_code" value="{{ old('postal_code',auth()->user()->postal_code) }}" />
                     </label>
                     @if ($errors->has('postal_code'))
-                    <div class="profile__alert-danger">
+                    <div class="profile-alert-danger">
                         <ul>
                             @foreach ($errors->get('postal_code') as $error)
                             <li>{{ $error }}</li>
@@ -96,11 +96,11 @@
                     @endif
                 </td>
             </tr>
-            <tr class="profile__form-row">
+            <tr class="profile-form-row">
                 <td>
-                    <label class="profile__form-label">住所<br /><input type="text" class="profile__input" name="address" value="{{ old('address',auth()->user()->address) }}" /></label>
+                    <label class="profile-form-label">住所<br /><input type="text" class="profile-input" name="address" value="{{ old('address',auth()->user()->address) }}" /></label>
                     @if ($errors->has('address'))
-                    <div class="profile__alert-danger">
+                    <div class="profile-alert-danger">
                         <ul>
                             @foreach ($errors->get('address') as $error)
                             <li>{{ $error }}</li>
@@ -110,11 +110,11 @@
                     @endif
                 </td>
             </tr>
-            <tr class="profile__form-row">
+            <tr class="profile-form-row">
                 <td>
-                    <label class="profile__form-label">建物名<br /><input type="text" class="profile__input" name="building" value="{{ old('building',auth()->user()->building) }}" /></label>
+                    <label class="profile-form-label">建物名<br /><input type="text" class="profile-input" name="building" value="{{ old('building',auth()->user()->building) }}" /></label>
                     @if ($errors->has('building'))
-                    <div class="profile__alert-danger">
+                    <div class="profile-alert-danger">
                         <ul>
                             @foreach ($errors->get('building') as $error)
                             <li>{{ $error }}</li>
@@ -124,9 +124,9 @@
                     @endif
                 </td>
             </tr>
-            <tr class="profile__form-row">
-                <td class="profile__form-col-button">
-                    <button type="submit" class="profile__button">更新する<br /></button>
+            <tr class="profile-form-row">
+                <td class="profile-form-col-button">
+                    <button type="submit" class="profile-button">更新する<br /></button>
                 </td>
             </tr>
         </table>

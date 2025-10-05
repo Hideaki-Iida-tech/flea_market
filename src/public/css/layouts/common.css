@@ -3,7 +3,7 @@
     max-width: 1540px;
     min-width: 1400px;
 }
-.header__inner {
+.header-inner {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
