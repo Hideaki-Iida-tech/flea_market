@@ -1,5 +1,5 @@
 /* 以下ヘッダー部のCSS */
-.header__search {
+.header-search {
     width: 400px;
     height: 40px;
     border-radius: 3px;
@@ -7,12 +7,12 @@
     padding: 0 10px;
 }
 
-.header__button {
+.header-button {
     display: flex;
 }
 
-.header__button-logout,
-.header__button-mypage {
+.header-button-logout,
+.header-button-mypage {
     height: 40px;
     margin: 2px 10px;
     color: #fff;
@@ -22,7 +22,7 @@
     cursor: pointer;
 }
 
-.header__button-sell {
+.header-button-sell {
     height: 40px;
     margin: 2px 10px;
     border-radius: 3px;
@@ -32,7 +32,7 @@
 
 /* 以下ヘッダー部CSS終わり */
 
-.items__menu {
+.items-menu {
     min-width: 1400px;
     max-width: 1540px;
     height: 94px;
@@ -42,25 +42,25 @@
 a {
     text-decoration: none;
 }
-.item__menu-link {
+.items-menu-link {
     color: #ff0000;
 }
 hr {
     min-width: 1400px;
     max-width: 1540px;
 }
-.items__content {
+.items-content {
     padding: 40px 40px;
     min-width: 1400px;
     max-width: 1540px;
     display: flex;
     flex-wrap: wrap;
 }
-.items__image {
+.items-image {
     width: 320px;
     height: 320px;
 }
-.items__image-content {
+.items-image-content {
     display: inline-block;
     width: 280px;
     height: 280px;

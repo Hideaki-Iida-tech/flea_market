@@ -6,23 +6,23 @@
 会員登録画面
 @endsection
 @section('content')
-<div class="register__form">
-    <form action="/register" class="register__form-inner" method="post" novalidate>
+<div class="register-form">
+    <form action="/register" class="register-form-inner" method="post" novalidate>
         @csrf
-        <table class="register__form-table">
-            <tr class="register__form-row-first">
+        <table class="register-form-table">
+            <tr class="register-form-row-first">
                 <td>
                     <h1>会員登録</h1>
                 </td>
             </tr>
-            <tr class="register__form-row">
+            <tr class="register-form-row">
                 <td>
-                    <label class="register__form-label">
+                    <label class="register-form-label">
                         ユーザー名<br />
-                        <input type="text" class="register__input" name="name" value="{{ old('name') }}" />
+                        <input type="text" class="register-input" name="name" value="{{ old('name') }}" />
                     </label>
                     @if ($errors->has('name'))
-                    <div class="register__alert-danger">
+                    <div class="register-alert-danger">
                         <ul>
                             @foreach ($errors->get('name') as $error)
                             <li>{{ $error }}</li>
@@ -32,12 +32,12 @@
                     @endif
                 </td>
             </tr>
-            <tr class="register__form-row">
+            <tr class="register-form-row">
                 <td>
-                    <label class="register__form-label">メールアドレス<br /><input type="email" class="register__input" name="email" value="{{ old('email') }}" />
+                    <label class="register-form-label">メールアドレス<br /><input type="email" class="register-input" name="email" value="{{ old('email') }}" />
                     </label>
                     @if ($errors->has('email'))
-                    <div class="register__alert-danger">
+                    <div class="register-alert-danger">
                         <ul>
                             @foreach ($errors->get('email') as $error)
                             <li>{{ $error }}</li>
@@ -47,11 +47,11 @@
                     @endif
                 </td>
             </tr>
-            <tr class="register__form-row">
+            <tr class="register-form-row">
                 <td>
-                    <label class="register__form-label">パスワード<br /><input type="password" class="register__input" name="password" /></label>
+                    <label class="register-form-label">パスワード<br /><input type="password" class="register-input" name="password" /></label>
                     @if ($errors->has('password'))
-                    <div class="register__alert-danger">
+                    <div class="register-alert-danger">
                         <ul>
                             @foreach ($errors->get('password') as $error)
                             <li>{{ $error }}</li>
@@ -61,11 +61,11 @@
                     @endif
                 </td>
             </tr>
-            <tr class="register__form-row">
+            <tr class="register-form-row">
                 <td>
-                    <label class="register__form-label">確認用パスワード<br /><input type="password" class="register__input" name="password_confirmation" /></label>
+                    <label class="register-form-label">確認用パスワード<br /><input type="password" class="register-input" name="password_confirmation" /></label>
                     @if ($errors->has('password_confirmation'))
-                    <div class="register__alert-danger">
+                    <div class="register-alert-danger">
                         <ul>
                             @foreach ($errors->get('password_confirmation') as $error)
                             <li>{{ $error }}</li>
@@ -75,14 +75,14 @@
                     @endif
                 </td>
             </tr>
-            <tr class="register__form-row">
-                <td class="register__form-col-button">
-                    <button type="submit" class="register__button">登録する<br /></button>
+            <tr class="register-form-row">
+                <td class="register-form-col-button">
+                    <button type="submit" class="register-button">登録する<br /></button>
                 </td>
             </tr>
-            <tr class="register__form-row-last">
-                <td class="register__form-col-link">
-                    <a href="/login" class="register__form-link">ログインはこちら</a>
+            <tr class="register-form-row-last">
+                <td class="register-form-col-link">
+                    <a href="/login" class="register-form-link">ログインはこちら</a>
                 </td>
             </tr>
         </table>

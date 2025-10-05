@@ -7,7 +7,7 @@
 @endsection
 @section('input')
 <form id="search-form" action="/" method="get">
-    <input type="text" id="search-box" name="keyword" class="header__search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
+    <input type="text" id="search-box" name="keyword" class="header-search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
 </form>
 <script>
     document.getElementById('search-box').addEventListener('keydown', function(e) {
@@ -19,37 +19,37 @@
 </script>
 @endsection
 @section('button')
-<div class="header__button">
+<div class="header-button">
     <form action="/logout" method="post">
         @csrf
-        <button class="header__button-logout">ログアウト</button>
+        <button class="header-button-logout">ログアウト</button>
     </form>
     <form action="/mypage" method="get">
-        <button class="header__button-mypage">マイページ</button>
+        <button class="header-button-mypage">マイページ</button>
     </form>
     <form action="/sell" method="get">
-        <button class="header__button-sell">出品</button>
+        <button class="header-button-sell">出品</button>
     </form>
 </div>
 @endsection
 @section('content')
-<div class="address__form">
-    <form action="/purchase/address/{{ $item->id }}" class="address__form-inner" method="post">
+<div class="address-form">
+    <form action="/purchase/address/{{ $item->id }}" class="address-form-inner" method="post">
         @csrf
-        <table class="address__form-table">
-            <tr class="address__form-row-first">
+        <table class="address-form-table">
+            <tr class="address-form-row-first">
                 <td>
                     <h1>住所の変更</h1>
                 </td>
             </tr>
-            <tr class="address__form-row">
+            <tr class="address-form-row">
                 <td>
-                    <label class="address__form-label">
+                    <label class="address-form-label">
                         郵便番号<br />
-                        <input type="text" class="address__input" name="postal_code" value="{{ old('postal_code', $postal_code) }}" />
+                        <input type="text" class="address-input" name="postal_code" value="{{ old('postal_code', $postal_code) }}" />
                     </label>
                     @if ($errors->has('postal_code'))
-                    <div class="address__alert-danger">
+                    <div class="address-alert-danger">
                         <ul>
                             @foreach ($errors->get('postal_code') as $error)
                             <li>{{ $error }}</li>
@@ -59,12 +59,12 @@
                     @endif
                 </td>
             </tr>
-            <tr class="address__form-row">
+            <tr class="address-form-row">
                 <td>
-                    <label class="address__form-label">住所<br /><input type="text" class="address__input" name="address" value="{{ old('address', $address) }}" />
+                    <label class="address-form-label">住所<br /><input type="text" class="address-input" name="address" value="{{ old('address', $address) }}" />
                     </label>
                     @if ($errors->has('address'))
-                    <div class="address__alert-danger">
+                    <div class="address-alert-danger">
                         <ul>
                             @foreach ($errors->get('address') as $error)
                             <li>{{ $error }}</li>
@@ -74,11 +74,11 @@
                     @endif
                 </td>
             </tr>
-            <tr class="address__form-row">
+            <tr class="address-form-row">
                 <td>
-                    <label class="address__form-label">建物名<br /><input type="text" class="address__input" name="building" value="{{ old('building', $building) }}" /></label>
+                    <label class="address-form-label">建物名<br /><input type="text" class="address-input" name="building" value="{{ old('building', $building) }}" /></label>
                     @if ($errors->has('building'))
-                    <div class="address__alert-danger">
+                    <div class="address-alert-danger">
                         <ul>
                             @foreach ($errors->get('building') as $error)
                             <li>{{ $error }}</li>
@@ -88,9 +88,9 @@
                     @endif
                 </td>
             </tr>
-            <tr class="address__form-row">
-                <td class="address__form-col-button">
-                    <button type="submit" class="address__button">更新する<br /></button>
+            <tr class="address-form-row">
+                <td class="address-form-col-button">
+                    <button type="submit" class="address-button">更新する<br /></button>
                 </td>
             </tr>
         </table>
