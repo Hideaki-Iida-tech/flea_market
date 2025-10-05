@@ -1,5 +1,5 @@
 /* 以下ヘッダー部のCSS */
-.header__search {
+.header-search {
     width: 400px;
     height: 40px;
     border-radius: 3px;
@@ -7,12 +7,12 @@
     padding: 0 10px;
 }
 
-.header__button {
+.header-button {
     display: flex;
 }
 
-.header__button-logout,
-.header__button-mypage {
+.header-button-logout,
+.header-button-mypage {
     height: 40px;
     margin: 2px 10px;
     color: #fff;
@@ -22,7 +22,7 @@
     cursor: pointer;
 }
 
-.header__button-sell {
+.header-button-sell {
     height: 40px;
     margin: 2px 10px;
     border-radius: 3px;
@@ -32,22 +32,22 @@
 
 /* 以下ヘッダー部CSS終わり */
 
-.items__content {
+.items-content {
     width: 1380px;
     display: flex;
     margin: 0 auto;
 }
-.items__image {
+.items-image {
     width: 690px;
     height: 1704.4px;
     padding: 45px 45px;
 }
-.items__detail {
+.items-detail {
     width: 690px;
     height: 1704.4px;
     padding: 0 45px;
 }
-.items__img {
+.items-img {
     display: inline-block;
     width: 600px;
     height: 600px;
@@ -56,7 +56,7 @@
 .brand {
     font-size: 14px;
 }
-.price__font {
+.price-font {
     font-size: 30px;
 }
 .icons {
@@ -78,23 +78,23 @@
     width: 50px;
     height: 50px;
 }
-.like__img {
+.like-img {
     width: 50px;
     height: 50px;
     background: #cccccc;
 }
-.comment__img {
+.comment-img {
     width: 50px;
     height: 50px;
     background: #cccccc;
 }
-.like__count {
+.like-count {
     text-align: center;
 }
-.comment__count {
+.comment-count {
     text-align: center;
 }
-.form__purchase-submit {
+.form-purchase-submit {
     width: 100%;
     height: 40px;
     background: #ff0000;
@@ -104,49 +104,49 @@
     font-size: 20px;
     cursor: pointer;
 }
-.categories__box {
+.categories-box {
     display: flex;
     padding: 10px 20px;
 }
-.category__name {
+.category-name {
     background: #cccccc;
     border-radius: 15px;
     padding: 0 10px;
     margin: 0 10px;
 }
-.condition__box {
+.condition-box {
     padding: 10px 20px;
 }
-.condition__name {
+.condition-name {
     padding: 0 10px;
     margin: 0 10px;
 }
-.user__info {
+.user-info {
     display: flex;
     align-items: center;
 }
-.profile__image {
+.profile-image {
     border-radius: 50%;
     background: #cccccc;
     height: 40px;
     width: 40px;
     margin: 10px 10px;
 }
-.user__name {
+.user-name {
     font-weight: bold;
 }
-.comment__content {
+.comment-content {
     display: flex;
     align-items: center;
     height: 40px;
     background: #cccccc;
     border-radius: 3px;
 }
-.comment__body {
+.comment-body {
     width: 100%;
     height: 300px;
 }
-.comment__edit-submit {
+.comment-edit-submit {
     width: 100%;
     height: 40px;
     background: #ff0000;
@@ -156,12 +156,12 @@
     font-size: 20px;
     cursor: pointer;
 }
-.comment__alert-danger {
+.comment-alert-danger {
     background: #ff0000;
     color: #fff;
     margin: 20px 0px;
 }
-.comment__container {
+.comment-container {
     height:300px;
     overflow: auto;
 }

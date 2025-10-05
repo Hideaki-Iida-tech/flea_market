@@ -13,14 +13,14 @@
 
 <body>
     <header class="header">
-        <div class="header__inner">
-            <div class="header__logo">
+        <div class="header-inner">
+            <div class="header-logo">
                 <img src="{{ asset('images/logo.svg') }}" alt="coachtech" />
             </div>
-            <div class="header__input">
+            <div class="header-input">
                 @yield('input')
             </div>
-            <div class="header__button">
+            <div class="header-button">
                 @yield('button')
             </div>
         </div>

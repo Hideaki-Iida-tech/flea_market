@@ -7,7 +7,7 @@
 @endsection
 @section('input')
 <form id="search-form" action="/" method="get">
-    <input type="text" id="search-box" name="keyword" class="header__search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
+    <input type="text" id="search-box" name="keyword" class="header-search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
 </form>
 <script>
     document.getElementById('search-box').addEventListener('keydown', function(e) {
@@ -19,48 +19,48 @@
 </script>
 @endsection
 @section('button')
-<div class="header__button">
+<div class="header-button">
     <form action="/logout" method="post">
         @csrf
-        <button class="header__button-logout">ログアウト</button>
+        <button class="header-button-logout">ログアウト</button>
     </form>
     <form action="/mypage" method="get">
-        <button class="header__button-mypage">マイページ</button>
+        <button class="header-button-mypage">マイページ</button>
     </form>
     <form action="/sell" method="get">
-        <button class="header__button-sell">出品</button>
+        <button class="header-button-sell">出品</button>
     </form>
 </div>
 @endsection
 @section('content')
-<div class="sell__content">
+<div class="sell-content">
     <form action="/sell" method="post" enctype="multipart/form-data">
         @csrf
-        <div class="sell__title">
+        <div class="sell-title">
             <h1>商品の出品</h1>
         </div>
-        <div class="sell__image--title">
+        <div class="sell-image-title">
             商品画像
         </div>
-        <div class="sell__image--content">
+        <div class="sell-image-content">
             @php
             $currentPath = old('current_item_image');
             $currentUrl = $currentPath ? Storage::url($currentPath) : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGM4c+YMAATMAmU5mmUsAAAAAElFTkSuQmCC';
             @endphp
-            <img id="itemPreview" src="{{ $currentUrl }}" alt="" class="sell__img" />
+            <img id="itemPreview" src="{{ $currentUrl }}" alt="" class="sell-img" />
             <input type="hidden" name="current_item_image" value="{{ $currentPath }}" />
             <input id="fileInput" class="file-input" type="file" name="item_image" accept=".jpeg,.png" style="display:none" />
             <label id="pickImageBtn" for="fileInput" class="upload-button">画像を選択する</label>
         </div>
         @error('item_image')
-        <div class="sell__alert-danger">
+        <div class="sell-alert-danger">
             <ul>
                 <li>{{ $message }}</li>
             </ul>
         </div>
         @enderror
-        <div class="sell__detail">
-            <h2 class="sell__detail--title">商品の詳細</h2>
+        <div class="sell-detail">
+            <h2 class="sell-detail-title">商品の詳細</h2>
             <hr />
             <h3>カテゴリー</h3>
             <div class="chip-list">
@@ -72,14 +72,14 @@
 
             </div>
             @error('categories')
-            <div class="sell__alert-danger">
+            <div class="sell-alert-danger">
                 <ul>
                     <li>{{ $message }}</li>
                 </ul>
             </div>
             @enderror
             @foreach($errors->get('categories.*') as $error)
-            <div class="sell__alert-danger">
+            <div class="sell-alert-danger">
                 <ul>
                     @foreach ($error as $message)
                     <li>{{ $message }}</li>
@@ -88,14 +88,14 @@
             </div>
             @endforeach
             <h3>商品の状態</h3>
-            <select name="condition_id" class="sell__detail--condition">
+            <select name="condition_id" class="sell-detail-condition">
                 <option value="0">選択してください</option>
                 @foreach($conditions as $condition)
                 <option value="{{ $condition['id'] }}" {{ old('condition_id') == $condition['id'] ? 'selected' : ''}}>{{ $condition['name'] }}</option>
                 @endforeach
             </select>
             @if ($errors->has('condition_id'))
-            <div class="sell__alert-danger">
+            <div class="sell-alert-danger">
                 <ul>
                     @foreach ($errors->get('condition_id') as $error)
                     <li>{{ $error }}</li>
@@ -105,12 +105,12 @@
             @endif
         </div>
         <div class="name-and-description">
-            <h2 class="name-and-description__title">商品名と説明</h2>
+            <h2 class="name-and-description-title">商品名と説明</h2>
             <hr />
             <h3>商品名</h3>
-            <input type="text" name="item_name" class="name-and-description__input" value="{{ old('item_name') }}" />
+            <input type="text" name="item_name" class="name-and-description-input" value="{{ old('item_name') }}" />
             @if ($errors->has('item_name'))
-            <div class="sell__alert-danger">
+            <div class="sell-alert-danger">
                 <ul>
                     @foreach ($errors->get('item_name') as $error)
                     <li>{{ $error }}</li>
@@ -119,9 +119,9 @@
             </div>
             @endif
             <h3>ブランド名</h3>
-            <input type="text" name="brand" class="name-and-description__input" value="{{ old('brand') }}" />
+            <input type="text" name="brand" class="name-and-description-input" value="{{ old('brand') }}" />
             @if ($errors->has('brand'))
-            <div class="sell__alert-danger">
+            <div class="sell-alert-danger">
                 <ul>
                     @foreach ($errors->get('brand') as $error)
                     <li>{{ $error }}</li>
@@ -132,7 +132,7 @@
             <h3>商品の説明</h3>
             <textarea name="description" class="description">{{ old('description') }}</textarea>
             @if ($errors->has('description'))
-            <div class="sell__alert-danger">
+            <div class="sell-alert-danger">
                 <ul>
                     @foreach ($errors->get('description') as $error)
                     <li>{{ $error }}</li>
@@ -143,10 +143,10 @@
             <h3>販売価格</h3>
             <div class="input-wrapper">
                 <span class="prefix">￥</span>
-                <input type="text" name="price" class="name-and-description__input" value="{{ old('price') }}" />
+                <input type="text" name="price" class="name-and-description-input" value="{{ old('price') }}" />
             </div>
             @if ($errors->has('price'))
-            <div class="sell__alert-danger">
+            <div class="sell-alert-danger">
                 <ul>
                     @foreach ($errors->get('price') as $error)
                     <li>{{ $error }}</li>
@@ -155,8 +155,8 @@
             </div>
             @endif
         </div>
-        <div class="sell__submit">
-            <button class="sell__submit-button">出品する</button>
+        <div class="sell-submit">
+            <button class="sell-submit-button">出品する</button>
         </div>
     </form>
 </div>

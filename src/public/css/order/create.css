@@ -1,5 +1,5 @@
 /* 以下ヘッダー部のCSS */
-.header__search {
+.header-search {
     width: 400px;
     height: 40px;
     border-radius: 3px;
@@ -7,12 +7,12 @@
     padding: 0 10px;
 }
 
-.header__button {
+.header-button {
     display: flex;
 }
 
-.header__button-logout,
-.header__button-mypage {
+.header-button-logout,
+.header-button-mypage {
     height: 40px;
     margin: 2px 10px;
     color: #fff;
@@ -22,7 +22,7 @@
     cursor: pointer;
 }
 
-.header__button-sell {
+.header-button-sell {
     height: 40px;
     margin: 2px 10px;
     border-radius: 3px;
@@ -32,32 +32,32 @@
 
 /* 以下ヘッダー部CSS終わり */
 
-.purchase__content {
+.purchase-content {
     min-width: 1400px;
     max-width: 1540px;
     display: flex;
     padding: 80px 80px;
 }
-.purchase__item {
+.purchase-item {
     display: flex;
     width: 805px;
 }
-.purchase__confirm-submit {
+.purchase-confirm-submit {
     width: 500px;
     padding: 0 30px;
 }
-.item__image {
+.item-image {
     width:177.53px;
     height: 177.53px;
     margin-right: 50px;
 }
-.item__img {
+.item-img {
     display: inline-block;
     width: 100%;
     height: 100%;
     background: #cccccc;
 }
-.item__name {
+.item-name {
     font-weight: bold;
     font-size: 20px;
 }
@@ -68,7 +68,7 @@ hr {
     width: 805px;
     padding: 0;
 }
-.payment-method__title {
+.payment-method-title {
     font-size: 16px;
     font-weight: bold;
     margin: 0 20px;
@@ -77,14 +77,14 @@ hr {
     width: 326px;
     height: 85px;
 }
-.payment-method__select {
+.payment-method-select {
     margin-top: 10px;
     margin-left: 80px;
     margin-bottom: 50px;
     width: 265px;
     height: 31px;
 }
-.address__header {
+.address-header {
     height: 85px;
     font-size: 16px;
     margin: 0 20px;
@@ -92,25 +92,25 @@ hr {
     justify-content: space-between;
     align-items: center;
 }
-.address__title {
+.address-title {
     font-weight: bold;
 }
-.address__content {
+.address-content {
     margin-top: 10px;
     margin-left:80px;
     margin-bottom: 50px;
     width :280px;
     height: 58px;
 }
-.address__edit--link {
+.address-edit-link {
     text-decoration: none;
     color: #0000ff
 }
-.price__table {
+.price-table {
     width: 440px;
     height: 230px;
 }
-.purchase__button-submit {
+.purchase-button-submit {
     width: 440px;
     height: 60px;
     background: #ff0000;
@@ -121,7 +121,7 @@ hr {
     cursor: pointer;
     font-size: 20px;
 }
-.address__textarea {
+.address-textarea {
     width: 100%;
     height: 100%;
     resize: none;
@@ -130,7 +130,7 @@ hr {
 .price-table-col {
     width: 40%;
 }
-.order__alert-danger {
+.order-alert-danger {
     background: #ff0000;
     color: #fff;
 }
