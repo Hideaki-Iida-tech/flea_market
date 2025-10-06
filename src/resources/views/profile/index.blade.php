@@ -53,8 +53,10 @@
     @if(!empty($items))
     @foreach($items as $item)
     <div class="profile-image">
-        <img src="{{ $item->image_url }}" alt="商品画像" class="profile-image-content" /><br />
-        {{ $item->item_name }}
+        <a href="/item/{{ $item->id }}">
+            <img src="{{ $item->image_url }}" alt="商品画像" class="profile-image-content" /><br />
+            {{ $item->item_name }}
+        </a>
     </div>
     @endforeach
     @endif
