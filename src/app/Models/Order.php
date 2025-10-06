@@ -16,9 +16,20 @@ class Order extends Model
         self::PAYMENT_CONVENIENCE => 'コンビニ払い',
         self::PAYMENT_CARD => 'カード支払い'
     ];
+
+    public static $paymentCodes = [
+        self::PAYMENT_CONVENIENCE => 'konbini',
+        self::PAYMENT_CARD => 'card',
+    ];
+
     public function getPaymentMethodLabelAttribute()
     {
         return self::$paymentLabels[$this->payment_method] ?? '不明';
+    }
+
+    public function getPaymentMethodCodeAttribute()
+    {
+        return self::$paymentCodes[$this->payment_method];
     }
 
     /**
