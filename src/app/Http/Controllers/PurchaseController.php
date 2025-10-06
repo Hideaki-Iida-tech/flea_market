@@ -9,6 +9,7 @@ use App\Http\Requests\PaymentDraftRequest;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\User;
+use Stripe\Stripe;
 
 class PurchaseController extends Controller
 {
@@ -68,7 +69,10 @@ class PurchaseController extends Controller
 
         Order::create($orderData);
         session()->forget("order_draft.{$item_id}");
-        return redirect('/');
+        //return redirect('/');
+
+        // Stripeの決済画面の表示メソッドをコール
+        return $this->createPayment($orderData);
     }
 
     public function addressIndex($item_id)
@@ -112,5 +116,42 @@ class PurchaseController extends Controller
         $validatedValue = $request->validated();
         session(["order_draft.{$validatedValue['item_id']}.payment_method" => $validatedValue['payment_method']]);
         return response()->noContent(); //204
+    }
+    private function createPayment(array $orderData)
+    {
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $item = Item::findOrFail($orderData['item_id']);
+        $email = User::findOrFail($orderData['user_id'])->email;
+        $method = Order::$paymentCodes[$orderData['payment_method']];
+
+        $params = [
+            'mode' => 'payment',
+            'line_items' => [[
+                'price_data' => [
+                    'currency' => 'jpy',
+                    'unit_amount' => $item->price,
+                    'product_data' => ['name' => $item->item_name],
+                ],
+                'quantity' => 1,
+            ]],
+
+            'success_url' => url('/'),
+            'cancel_url' => url('/'),
+
+            'payment_method_types' => [$method],
+        ];
+
+        if ($method === 'konbini') {
+            if ($email) {
+                $params['customer_email'] = $email;
+            } else {
+                $params['customer_creation'] = 'always';
+            }
+        }
+
+        $session = \Stripe\Checkout\Session::create($params);
+
+        return redirect()->away($session->url);
     }
 }
