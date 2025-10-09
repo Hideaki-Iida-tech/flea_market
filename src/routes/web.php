@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\PurchaseController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,7 +29,7 @@ use App\Http\Controllers\PurchaseController;
     return view('auth/login');
 });*/
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('/mypage/profile', [ProfileController::class, 'edit']);
     Route::post('/mypage/profile', [ProfileController::class, 'update']);
@@ -42,6 +44,27 @@ Route::middleware('auth')->group(function () {
     Route::post('/item/{item_id}/comment', [ItemController::class, 'commentCreate'])->where('item_id', '[0-9]+');
     Route::post('/item/{item_id}/like', [ItemController::class, 'toggle'])->where('item_id', '[0-9]+');
 });
+
+// 認証必須 & まだ未認証ユーザーが来るページ（通知画面）
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+// 署名付きリンクからの検証（メールの[Verify]ボタンが叩くURL）
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/mypage/profile')->with('varified', true);
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+// 検証メールの再送信
+Route::get('email/verification-notification', function (Request $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        return back();
+    }
+    $request->user()->sendEmailVerificationNotification();
+    return back();
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->where('item_id', '[0-9]+');
 
 /*Route::get('/mypage', function () {

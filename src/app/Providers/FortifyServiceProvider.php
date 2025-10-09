@@ -17,6 +17,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Fortify\Contracts\RegisterResponse;
 use Illuminate\Validation\ValidationException;
+use Laravel\Fortify\Features;
+
+use Laravel\Fortify\Contracts\LoginResponse;
+use App\Actions\Fortify\LoginResponse as CustomLoginResponse;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -40,6 +44,9 @@ class FortifyServiceProvider extends ServiceProvider
                 }
             };
         });
+
+        // 
+        $this->app->singleton(LoginResponse::class, CustomLoginResponse::class);
     }
 
     /**
@@ -91,5 +98,14 @@ class FortifyServiceProvider extends ServiceProvider
             // 該当するモデルインスタンスがない場合、nullを返す。
             return null;
         });
+
+        // メール認証を有効化
+        \Laravel\Fortify\Fortify::ignoreRoutes();
+        app(\Laravel\Fortify\Features::class);
+
+        config(['fortify.features' => array_unique(array_merge(
+            config('fortify.features', []),
+            [Features::emailVerification()]
+        ))]);
     }
 }
