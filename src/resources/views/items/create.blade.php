@@ -88,12 +88,14 @@
             </div>
             @endforeach
             <h3>商品の状態</h3>
-            <select name="condition_id" class="sell-detail-condition">
-                <option value="0">選択してください</option>
-                @foreach($conditions as $condition)
-                <option value="{{ $condition['id'] }}" {{ old('condition_id') == $condition['id'] ? 'selected' : ''}}>{{ $condition['name'] }}</option>
-                @endforeach
-            </select>
+            <div class="select-wrap">
+                <select name="condition_id" class="sell-detail-condition">
+                    <option value="0">選択してください</option>
+                    @foreach($conditions as $condition)
+                    <option value="{{ $condition['id'] }}" {{ old('condition_id') == $condition['id'] ? 'selected' : ''}}>{{ $condition['name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
             @if ($errors->has('condition_id'))
             <div class="sell-alert-danger">
                 <ul>
