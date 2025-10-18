@@ -1,0 +1,29 @@
+.success-form {
+    min-width: 1400px;
+    max-width: 1540px;
+}
+
+.success-form-inner {
+    margin: 200px auto;
+    width: 680px;
+    height: 656px;
+}
+
+.success-message {
+    font-weight: bold;
+    text-align: center;
+}
+
+.success-exec {
+    text-align: center;
+    padding: 20px 20px;
+}
+
+.success-exec-button {
+    height: 40px;
+    border-radius: 5px;
+    color: #000;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+}
