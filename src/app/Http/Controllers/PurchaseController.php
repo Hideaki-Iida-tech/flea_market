@@ -136,8 +136,8 @@ class PurchaseController extends Controller
                 'quantity' => 1,
             ]],
 
-            'success_url' => url('/'),
-            'cancel_url' => url('/'),
+            'success_url' => url('/payment/success'),
+            'cancel_url' => url('/payment/cancel'),
 
             'payment_method_types' => [$method],
         ];
@@ -153,5 +153,14 @@ class PurchaseController extends Controller
         $session = \Stripe\Checkout\Session::create($params);
 
         return redirect()->away($session->url);
+    }
+
+    public function success(Request $request)
+    {
+        return view('auth.success');
+    }
+    public function cancel()
+    {
+        return route('auth.cancel');
     }
 }

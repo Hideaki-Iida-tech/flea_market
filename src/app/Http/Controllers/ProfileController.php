@@ -7,6 +7,8 @@ use App\Http\Requests\ProfileRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Models\Item;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -33,7 +35,8 @@ class ProfileController extends Controller
     // プロフィールの更新アクションメソッド
     public function update(ProfileRequest $request)
     {
-        $user = auth()->user();
+        //$user = auth()->user();
+        $user = User::find(Auth::id());
         // テキスト項目を変数に格納
         $data = $request->only(['name', 'postal_code', 'address', 'building', 'is_profile_completed']);
 
@@ -57,7 +60,6 @@ class ProfileController extends Controller
                 abort(422, 'Invalid temporary path');
             }
         }
-
         $user->update($data);
         return redirect('/mypage');
     }
