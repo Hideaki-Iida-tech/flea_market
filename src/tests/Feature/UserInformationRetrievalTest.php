@@ -45,6 +45,20 @@ class UserInformationRetrievalTest extends TestCase
         $response->assertSee($user->name, false);
         $response->assertSee($user->profile_image, false);
 
+        // プロフィール初期画面にデフォルトで「出品した商品」一覧が表示されるか確認
+        $sellItems = Item::where('user_id', $user->id)->get();
+        foreach ($sellItems as $item) {
+            // 商品名
+            $response->assertSee($item->item_name, false);
+
+            // 詳細ページへのリンク
+            $response->assertSee('item/' . $item->id, false);
+
+            //画像URL
+            $response->assertSee($item->image_url, false);
+        }
+
+
         // 「出品した商品」一覧タブを表示
         $response = $this->actingAs($user)->get('/mypage?page=sell');
         $sellItems = Item::where('user_id', $user->id)->get();

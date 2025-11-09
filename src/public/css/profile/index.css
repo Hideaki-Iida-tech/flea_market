@@ -105,3 +105,7 @@ hr {
     font-size: 20px;
     cursor: pointer;
 }
+
+.sold {
+    color: #ff0000;
+}
