@@ -22,6 +22,7 @@ class LikeRequest extends FormRequest
             'item_id' => (int) $this->route('item_id'),
         ]);
     }
+
     /**
      * Get the validation rules that apply to the request.
      *

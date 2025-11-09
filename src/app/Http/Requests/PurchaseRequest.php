@@ -19,6 +19,7 @@ class PurchaseRequest extends FormRequest
     {
         return true;
     }
+
     public function validationData()
     {
         return array_merge($this->all(), [
@@ -26,13 +27,12 @@ class PurchaseRequest extends FormRequest
             'user_id' => auth()->id(),
         ]);
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-
-
     public function rules()
     {
         return [
@@ -46,6 +46,7 @@ class PurchaseRequest extends FormRequest
             'building' => ['string', 'nullable'],
         ];
     }
+
     public function messages()
     {
         return [
