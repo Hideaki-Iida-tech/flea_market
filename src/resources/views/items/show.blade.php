@@ -103,6 +103,8 @@
             <button class="form-purchase-submit">購入手続きへ</button>
         </form>
         @endif
+        @else
+        <div class="purchase-completed">購入処理済み</div>
         @endif
         <h2>商品説明</h2>
         <div class="description">

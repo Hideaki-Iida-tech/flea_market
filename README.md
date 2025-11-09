@@ -21,6 +21,8 @@ Laravel 環境構築
 `php artisan storage:link`
 `composer require stripe/stripe-php`
 
+4..env.testing.example から.env.testing を作成し、環境変数を変更
+
 使用技術
 PHP 8.1
 

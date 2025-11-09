@@ -9,6 +9,7 @@ use App\Http\Requests\PaymentDraftRequest;
 use App\Models\Item;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Comment;
 use Stripe\Stripe;
 
 class PurchaseController extends Controller
@@ -16,7 +17,11 @@ class PurchaseController extends Controller
     public function index($item_id)
     {
         if (Order::isSold($item_id)) {
-            return redirect('/');
+            $item = Item::with('categories')->findOrFail($item_id);
+            $comments = Comment::with('user')->where('item_id', $item_id)->get();
+            $sold = Order::isSold($item_id);
+
+            return view('items/show', compact('item', 'comments', 'sold'));
         }
 
         if (!User::isProfileCompleted(auth()->id())) {
@@ -43,13 +48,15 @@ class PurchaseController extends Controller
 
     public function store(PurchaseRequest $request)
     {
-
         $validatedValue = $request->validated();
         $item_id = $validatedValue['item_id'];
         $sold = Order::isSold($item_id);
 
         if ($sold) {
-            return redirect('/');
+            $item = Item::with('categories')->findOrFail($item_id);
+            $comments = Comment::with('user')->where('item_id', $item_id)->get();
+
+            return view('items/show', compact('item', 'comments', 'sold'));
         }
 
         $postal_code = session(
@@ -77,7 +84,6 @@ class PurchaseController extends Controller
 
         Order::create($orderData);
         session()->forget("order_draft.{$item_id}");
-        //return redirect('/');
 
         // Stripeの決済画面の表示メソッドをコール
         return $this->createPayment($orderData);
