@@ -121,6 +121,8 @@
                 購入する
             </button>
         </form>
+        @else
+        <div class="purchase-completed">購入処理済み</div>
         @endif
     </div>
 </div>
