@@ -43,5 +43,13 @@ class Order extends Model
         return self::where('item_id', $item_id)->exists();
     }
 
-    protected $fillable = ['user_id', 'item_id', 'price', 'address', 'payment_method', 'postal_code', 'building'];
+    protected $fillable = [
+        'user_id',
+        'item_id',
+        'price',
+        'address',
+        'payment_method',
+        'postal_code',
+        'building'
+    ];
 }

@@ -86,6 +86,7 @@ class FortifyServiceProvider extends ServiceProvider
             $request->validate($loginReq->rules(), $loginReq->messages());
             // usersテーブルから入力したemailと一致するレコードを取得
             $user = User::where('email', $request->input('email'))->first();
+
             // 取得したmodelインスタンスがnullではなく、usersテーブルのpasswordと入力したパスワードが一致すれば、取得したmodelインスタンスを返す
             if ($user && Hash::check($request->input('password'), $user->password)) {
                 return $user;
@@ -95,17 +96,18 @@ class FortifyServiceProvider extends ServiceProvider
                     'password' => ['ログイン情報が登録されていません'],
                 ]);
             }
+
             // 該当するモデルインスタンスがない場合、nullを返す。
             return null;
         });
 
-        // メール認証を有効化
+        /*// メール認証を有効化
         \Laravel\Fortify\Fortify::ignoreRoutes();
         app(\Laravel\Fortify\Features::class);
 
         config(['fortify.features' => array_unique(array_merge(
             config('fortify.features', []),
             [Features::emailVerification()]
-        ))]);
+        ))]);*/
     }
 }
