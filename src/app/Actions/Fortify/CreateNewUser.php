@@ -28,17 +28,6 @@ class CreateNewUser implements CreatesNewUsers
         // 自作のフォームリクエストのルールとメッセージを適用
         Validator::make(
             $input,
-            /*[
-                'name' => ['required', 'string', 'max:255'],
-                'email' => [
-                    'required',
-                    'string',
-                    'email',
-                    'max:255',
-                    Rule::unique(User::class),
-                ],
-                'password' => $this->passwordRules(),
-            ]*/
             $req->rules(),
             $req->messages(),
         )->validate();

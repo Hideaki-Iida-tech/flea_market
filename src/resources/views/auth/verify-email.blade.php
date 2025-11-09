@@ -12,12 +12,12 @@
             登録いただいたメールアドレスに認証メールを送付しました。<br />
             メール認証を完了してください。
         </div>
+
         <div class="verify-email-exec">
             <form action="{{ url('http://localhost:8025') }}" method="get">
                 <button class="verify-email-exec-button">認証はこちらから</button>
             </form>
         </div>
-
 
         <div class="verify-email-resend">
             <form action="{{ route('verification.send') }}" method="get">

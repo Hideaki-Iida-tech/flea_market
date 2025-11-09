@@ -15,12 +15,14 @@ class AddressRequest extends FormRequest
     {
         return true;
     }
+
     public function validationData()
     {
         return array_merge($this->all(), [
             'item_id' => (int) $this->route('item_id'),
         ]);
     }
+
     protected function prepareForValidation()
     {
 
@@ -35,6 +37,7 @@ class AddressRequest extends FormRequest
         // 7桁なら xxx-xxxx に整形、そうでなければ"数字だけ"を入れておき、後続のルールで弾く
         $this->merge(['postal_code' => strlen($digits) === 7 ? substr($digits, 0, 3) . '-' . substr($digits, 3) : $digits]);
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -50,6 +53,7 @@ class AddressRequest extends FormRequest
             'building' => ['sometimes', 'string', 'nullable', 'max:255'],
         ];
     }
+
     public function messages()
     {
         return [

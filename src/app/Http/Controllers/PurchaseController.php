@@ -13,23 +13,21 @@ use Stripe\Stripe;
 
 class PurchaseController extends Controller
 {
-
-    //
     public function index($item_id)
     {
         if (Order::isSold($item_id)) {
             return redirect('/');
         }
+
         if (!User::isProfileCompleted(auth()->id())) {
             return redirect('/mypage/profile');
         }
-        $draft = session("order_draft.{$item_id}", []);
 
+        $draft = session("order_draft.{$item_id}", []);
         $item = Item::findOrFail($item_id);
         $paymentLabels = Order::$paymentLabels;
         $user = auth()->user();
         $sold = Order::isSold($item_id);
-
         $viewData = [
             'item' => $item,
             'user' => $user,
@@ -39,7 +37,7 @@ class PurchaseController extends Controller
             'paymentLabels' => $paymentLabels,
             'sold' => $sold,
         ];
-        //return view('order.create', compact('item', 'paymentLabels', 'user', 'sold'));
+
         return view('order.create', $viewData);
     }
 
@@ -49,13 +47,23 @@ class PurchaseController extends Controller
         $validatedValue = $request->validated();
         $item_id = $validatedValue['item_id'];
         $sold = Order::isSold($item_id);
+
         if ($sold) {
             return redirect('/');
         }
 
-        $postal_code = session("order_draft.{$item_id}.postal_code", $validatedValue['postal_code']);
-        $address = session("order_draft.{$item_id}.address", $validatedValue['address']);
-        $building = session("order_draft.{$item_id}.building", $validatedValue['building']);
+        $postal_code = session(
+            "order_draft.{$item_id}.postal_code",
+            $validatedValue['postal_code']
+        );
+        $address = session(
+            "order_draft.{$item_id}.address",
+            $validatedValue['address']
+        );
+        $building = session(
+            "order_draft.{$item_id}.building",
+            $validatedValue['building']
+        );
 
         $orderData = [
             'user_id' => auth()->id(),
@@ -78,9 +86,11 @@ class PurchaseController extends Controller
     public function addressIndex($item_id)
     {
         $sold = Order::isSold($item_id);
+
         if ($sold) {
             return redirect('/');
         }
+
         $draft = session("order_draft.{$item_id}", []);
         $item = Item::findOrFail($item_id);
         $user = auth()->user();
@@ -90,18 +100,21 @@ class PurchaseController extends Controller
             'address' => $draft['address'] ?? $user->address,
             'building' => $draft['building'] ?? $user->building,
         ];
+
         return view('address.edit', $viewData);
     }
+
     public function addressUpdate(AddressRequest $request)
     {
         $validatedValue = $request->validated();
         $item_id = $validatedValue['item_id'];
         $sold = Order::isSold($item_id);
+
         if ($sold) {
             return redirect('/');
         }
-        $item = Item::findOrFail($item_id);
 
+        $item = Item::findOrFail($item_id);
         session([
             //"order_draft.{$item_id}.item" => $item,
             "order_draft.{$item_id}.postal_code" => $validatedValue['postal_code'],
@@ -111,12 +124,15 @@ class PurchaseController extends Controller
 
         return redirect('/purchase/' . $item_id);
     }
+
     public function savePaymentDraft(PaymentDraftRequest $request)
     {
         $validatedValue = $request->validated();
-        session(["order_draft.{$validatedValue['item_id']}.payment_method" => $validatedValue['payment_method']]);
+        session(["order_draft.{$validatedValue['item_id']}.payment_method"
+        => $validatedValue['payment_method']]);
         return response()->noContent(); //204
     }
+
     private function createPayment(array $orderData)
     {
         Stripe::setApiKey(config('services.stripe.secret'));
@@ -143,6 +159,7 @@ class PurchaseController extends Controller
         ];
 
         if ($method === 'konbini') {
+
             if ($email) {
                 $params['customer_email'] = $email;
             } else {
@@ -159,6 +176,7 @@ class PurchaseController extends Controller
     {
         return view('auth.success');
     }
+
     public function cancel()
     {
         return route('auth.cancel');

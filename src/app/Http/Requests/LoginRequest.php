@@ -30,6 +30,7 @@ class LoginRequest extends BaseLoginRequest
             'password' => ['required', 'string'],
         ];
     }
+
     public function messages()
     {
         return [

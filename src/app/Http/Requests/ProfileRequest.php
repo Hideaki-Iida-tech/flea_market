@@ -91,6 +91,7 @@ class ProfileRequest extends FormRequest
             'building' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }
+
     public function messages()
     {
         return [
@@ -110,7 +111,7 @@ class ProfileRequest extends FormRequest
 
             if (!$this->hasFile('profile_image') && !$this->filled('current_profile_image')) {
                 // どちらも空ならエラー
-                $validator->errors()->add('profile_image', '商品画像を指定してください');
+                $validator->errors()->add('profile_image', 'プロフィール用画像ファイルを指定してください');
             }
         });
     }

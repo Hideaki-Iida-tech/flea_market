@@ -22,6 +22,7 @@ class CommentRequest extends FormRequest
             'item_id' => (int) $this->route('item_id'),
         ]);
     }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -35,6 +36,7 @@ class CommentRequest extends FormRequest
             'body' => ['required', 'max:255'],
         ];
     }
+
     public function messages()
     {
         return [
