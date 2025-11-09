@@ -14,12 +14,12 @@ class ProfileController extends Controller
 {
     public function index(Request $request)
     {
-        $isSell = $request->page === 'sell';
+        $isSell = $request->page === 'sell' || !isset($request->page);
         $isBuy = $request->page === 'buy';
         $items = null;
 
         if ($isSell) {
-            $items = Item::where('user_id', auth()->id())->get();
+            $items = Item::with('order')->where('user_id', auth()->id())->get();
         } elseif ($isBuy) {
             $items = Item::whereHas('order', fn($query) => $query
                 ->where('user_id', auth()->id()))

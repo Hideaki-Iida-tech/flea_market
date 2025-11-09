@@ -48,6 +48,9 @@
         <a href="/item/{{ $item->id }}">
             <img src="{{ $item->image_url }}" alt="商品画像" class="profile-image-content" /><br />
             {{ $item->item_name }}
+            @if($item->order)
+            <span class="sold">Sold</span>
+            @endif
         </a>
     </div>
     @endforeach
