@@ -8,4 +8,4 @@ docker/mysql/logs/
 /storage/*.key
 .env
 .env.backup
-.phpunit.result.cache
+/src/.env.testing

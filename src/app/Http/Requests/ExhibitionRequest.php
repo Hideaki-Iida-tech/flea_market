@@ -44,7 +44,6 @@ class ExhibitionRequest extends FormRequest
      */
     public function rules()
     {
-
         return [
             //
             'item_name' => ['required', 'string'],
@@ -69,6 +68,7 @@ class ExhibitionRequest extends FormRequest
             'price' => ['required', 'integer', 'min:0'],
         ];
     }
+
     public function messages()
     {
         return [

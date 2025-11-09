@@ -15,12 +15,14 @@ class PaymentDraftRequest extends FormRequest
     {
         return true;
     }
+
     public function validationData()
     {
         return array_merge($this->all(), [
             'item_id' => (int) $this->route('item_id'),
         ]);
     }
+
     /**
      * Get the validation rules that apply to the request.
      *

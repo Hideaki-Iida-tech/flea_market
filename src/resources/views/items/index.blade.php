@@ -9,14 +9,6 @@
 <form id="search-form" action="/" method="get">
     <input type="text" id="search-box" name="keyword" class="header-search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
 </form>
-<script>
-    document.getElementById('search-box').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('search-form').submit();
-        }
-    });
-</script>
 @endsection
 @section('button')
 @if(Auth::check())
@@ -50,14 +42,14 @@
 @section('content')
 
 <div class="items-menu">
-
-    <a href="{{ $query ? $base . '?' . http_build_query($query) : $base }}">おすすめ</a>　　　　　<a href="{{ $base . '?' . http_build_query(array_merge(['tab' => 'mylist'], $query)) }}" class="items-menu-link">マイリスト</a>
+    <a href="{{ $query ? $base . '?' . http_build_query($query) : $base }}" class="items-menu-reconment">おすすめ</a>
+    <a href="{{ $base . '?' . http_build_query(array_merge(['tab' => 'mylist'], $query)) }}" class="items-menu-link">マイリスト</a>
 </div>
 <hr />
 <div class="items-content">
 
     @foreach($items as $item)
-    @if(empty(auth()->id()) || (auth()->id() !== $item->user_id) || $mylist)
+    @if((auth()->id() !== $item->user_id) || $mylist)
 
     <div class="items-image">
         <a href="/item/{{ $item->id }}">
@@ -73,4 +65,12 @@
     @endif
     @endforeach
 </div>
+<script>
+    document.getElementById('search-box').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            document.getElementById('search-form').submit();
+        }
+    });
+</script>
 @endsection
