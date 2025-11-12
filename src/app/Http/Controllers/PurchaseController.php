@@ -10,7 +10,7 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Comment;
-use Stripe\Stripe;
+use Illuminate\Support\Facades\Log;
 
 class PurchaseController extends Controller
 {
@@ -53,10 +53,23 @@ class PurchaseController extends Controller
         $sold = Order::isSold($item_id);
 
         if ($sold) {
-            $item = Item::with('categories')->findOrFail($item_id);
-            $comments = Comment::with('user')->where('item_id', $item_id)->get();
 
-            return view('items/show', compact('item', 'comments', 'sold'));
+            $draft = session("order_draft.{$item_id}", []);
+            $item = Item::findOrFail($item_id);
+            $paymentLabels = Order::$paymentLabels;
+            $user = auth()->user();
+            $sold = Order::isSold($item_id);
+            $viewData = [
+                'item' => $item,
+                'user' => $user,
+                'postal_code' => $draft['postal_code'] ?? $user->postal_code,
+                'address' => $draft['address'] ?? $user->address,
+                'building' => $draft['building'] ?? $user->building,
+                'paymentLabels' => $paymentLabels,
+                'sold' => $sold,
+            ];
+
+            return view('order.create', $viewData);
         }
 
         $postal_code = session(
@@ -122,7 +135,6 @@ class PurchaseController extends Controller
 
         $item = Item::findOrFail($item_id);
         session([
-            //"order_draft.{$item_id}.item" => $item,
             "order_draft.{$item_id}.postal_code" => $validatedValue['postal_code'],
             "order_draft.{$item_id}.address" => $validatedValue['address'],
             "order_draft.{$item_id}.building" => $validatedValue['building'],
@@ -141,41 +153,93 @@ class PurchaseController extends Controller
 
     private function createPayment(array $orderData)
     {
-        Stripe::setApiKey(config('services.stripe.secret'));
+        // ライブラリは使わず、HTTPで直接Stripeを叩く版
+        $apiKey = config('services.stripe.secret');
 
         $item = Item::findOrFail($orderData['item_id']);
-        $email = User::findOrFail($orderData['user_id'])->email;
+        $user = User::findOrFail($orderData['user_id']);
+        $email = $user->email;
         $method = Order::$paymentCodes[$orderData['payment_method']];
 
+        // Checkout Session作成パラメータ
         $params = [
             'mode' => 'payment',
+            // 成功/キャンセル後に便利なように session_id をクエリで返してもらう
+            'success_url' => url('/payment/success')
+                . '?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => url('/payment/cancel')
+                . '?session_id={CHECKOUT_SESSION_ID}',
+
+            // 支払い手段を明示（例：['card'] や ['konbini']）
+            'payment_method_types' => [$method],
+
+            // line_items はネスト配列（http_bulid_query で form-encodedになる）
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'jpy',
+                    // 金額は「サーバーで信頼できる値」を使う
                     'unit_amount' => $item->price,
-                    'product_data' => ['name' => $item->item_name],
+                    'product_data' => [
+                        'name' => $item->item_name,
+                    ],
                 ],
                 'quantity' => 1,
             ]],
-
-            'success_url' => url('/payment/success'),
-            'cancel_url' => url('/payment/cancel'),
-
-            'payment_method_types' => [$method],
         ];
 
+        // コンビニ払いのときの追加（任意：Eメールがあれば事前に紐づけ）
         if ($method === 'konbini') {
-
-            if ($email) {
+            if (!empty($email)) {
                 $params['customer_email'] = $email;
             } else {
                 $params['customer_creation'] = 'always';
             }
         }
 
-        $session = \Stripe\Checkout\Session::create($params);
+        // Stripe API 呼出（Checkout Session作成）
+        $ch = curl_init('https://api.stripe.com/v1/checkout/sessions');
+        curl_setopt_array($ch, [
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 30,
+            // Stripeは form-encoded を標準サポート（JSONでも可だが、確実さ優先）
+            CURLOPT_HTTPHEADER => [
+                'Authorization: Bearer ' . $apiKey,
+                'Content-Type: application/x-www-form-urlencoded',
+                // 必要に応じてAPIバージョンを固定
+                // 'Stripe-Version: 2023-10-16'
+            ],
+            // ネスト配列は http_build_query で "line_items[0][price_data][currency]=jpy"の形に
+            CURLOPT_POSTFIELDS => http_build_query($params),
+        ]);
 
-        return redirect()->away($session->url);
+        $raw = curl_exec($ch);
+        $errno = curl_errno($ch);
+        $error = curl_error($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($errno) {
+            // ネットワークエラー
+            Log::error('Stripe API network error', ['errno' => $errno, 'error' => $error]);
+            abort(502, 'Payment gateway unreachable');
+        }
+
+        $data = json_decode($raw, true);
+
+        if ($status < 200 || $status >= 300 || !is_array($data)) {
+            // Stripeからのエラーレスポンス
+            Log::error('Stripe API error', ['status' => $status, 'response' => $raw]);
+            abort(500, 'Payment initialization failed');
+        }
+
+        if (empty($data['url'])) {
+            Log::error('Stripe API: no session url', ['response' => $data]);
+            abort(500, 'Payment session URL not provided');
+        }
+
+        // Checkoutページへリダイレクト（PRG維持）
+        return redirect()->away($data['url']);
     }
 
     public function success(Request $request)

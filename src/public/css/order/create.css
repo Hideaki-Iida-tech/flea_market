@@ -47,8 +47,17 @@
     padding: 0 30px;
 }
 .purchase-completed {
-    width: 500px;
+    margin-top :50px;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0 30px;
+    background: grey;
+    color: #ffffff;
+    border: none;
+    border-radius: 3px;
 }
 .item-image {
     width:177.53px;

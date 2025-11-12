@@ -38,7 +38,7 @@ class PurchaseRequest extends FormRequest
         return [
             //
             'user_id' => ['required', 'exists:users,id', 'integer', 'min:1',],
-            'item_id' => ['required', 'exists:items,id', 'unique:orders', 'integer', 'min:1',],
+            'item_id' => ['required', 'exists:items,id', 'integer', 'min:1',],
             'price' => ['required', 'integer', 'min: 0',],
             'payment_method' => ['required', 'integer', 'in:' . implode(',', array_keys(Order::$paymentLabels)),],
             'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/',],
