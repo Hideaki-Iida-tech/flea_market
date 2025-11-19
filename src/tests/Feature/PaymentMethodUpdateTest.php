@@ -26,5 +26,29 @@ class PaymentMethodUpdateTest extends TestCase
         11月10日　担当コーチとの打ち合わせで、フロントエンドのみで完結する処理は、phpUnitではテストできないので、
             支払い方法の選択が小計欄に反映されることを確認するテストコードは省略しました。
         */
+
+        // 購入する商品itemのインスタンスを生成
+        $item = Item::where('item_name', '腕時計')->first()
+            ?? Item::inRandomOrder()->first();
+        // 購入をするユーザーのインスタンスを生成
+        $buyer = User::where('name', 'テストユーザー2')->first()
+            ?? User::inRandomOrder()->first();
+
+        // 生成したbuyerについて、メール認証済みにする
+        $buyer->markEmailAsVerified();
+
+        // buyerのプロフィールを設定
+        $profileData = [
+            'profile_image' => 'https://www.example.com/sample.jpeg',
+            'postal_code' => '000-0000',
+            'address' => '東京都葛飾区柴又',
+            'building' => 'メゾン柴又',
+            'is_profile_completed' => true,
+        ];
+        $buyer->update($profileData);
+
+        // 購入ページを表示
+        $response = $this->actingAs($buyer)->get('/purchase/' . $item->id);
+        $response->assertStatus(200);
     }
 }

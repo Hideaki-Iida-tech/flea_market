@@ -14,7 +14,6 @@ class CategoriesTableSeeder extends Seeder
      */
     public function run()
     {
-        //
         $param = ['name' => 'ファッション', 'created_at' => now(), 'updated_at' => now(),];
         DB::table('categories')->insert($param);
 

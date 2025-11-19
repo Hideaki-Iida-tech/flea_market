@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Category;
+use App\Models\Condition;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Contracts\Validation\Validator;
 
@@ -45,7 +47,6 @@ class ExhibitionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
             'item_name' => ['required', 'string'],
             'description' => ['required', 'max:255'],
             'item_image' => ['nullable', 'image', 'mimes:jpeg,png', 'max:2048'],
@@ -63,7 +64,7 @@ class ExhibitionRequest extends FormRequest
             'categories' => ['required', 'array', 'min:1'],
             'categories.*' => ['integer', 'exists:categories,id'],
             //データベースの値を参照して設定
-            'condition_id' => ['required', 'integer', 'exists:conditions,id', 'min:1'],
+            'condition_id' => ['required', 'integer', 'min:1', 'exists:conditions,id'],
             'brand' => ['sometimes', 'nullable', 'string'],
             'price' => ['required', 'integer', 'min:0'],
         ];
