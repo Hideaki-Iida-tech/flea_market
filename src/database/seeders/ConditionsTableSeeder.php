@@ -14,7 +14,6 @@ class ConditionsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
         $param = ['name' => '良好', 'created_at' => now(), 'updated_at' => now(),];
         DB::table('conditions')->insert($param);
 

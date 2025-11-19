@@ -92,6 +92,25 @@ class ItemController extends Controller
 
     public function create()
     {
+        // カテゴリマスタが未登録なら、config から投入
+        if (!Category::query()->exists()) {
+            $masterCategories = config('master.categories', []);
+
+            foreach ($masterCategories as $attrs) {
+                Category::create($attrs);
+            }
+        }
+
+        // コンディションマスタが未登録なら、config から投入
+        if (!Condition::query()->exists()) {
+            $masterConditions = config('master.conditions', []);
+
+            foreach ($masterConditions as $attrs) {
+                Condition::create($attrs);
+            }
+        }
+
+        // 改めて DB から取得（ここに来る時点で必ずDBにマスタデータが入っている想定）
         $categories = Category::all();
         $conditions = Condition::all();
 
