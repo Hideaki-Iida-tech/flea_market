@@ -147,7 +147,7 @@ class ItemController extends Controller
 
             DB::commit();
 
-            return redirect('/');
+            return redirect('/sell/success');
         } catch (\Exception $e) {
 
             DB::rollback();
@@ -158,7 +158,18 @@ class ItemController extends Controller
             }
 
             report($e);
-            return back()->withInput();
+            //return back()->withInput();
+            return redirect('/sell/error');
         }
+    }
+
+    public function success()
+    {
+        return view('items/success');
+    }
+
+    public function error()
+    {
+        return view('items/error');
     }
 }

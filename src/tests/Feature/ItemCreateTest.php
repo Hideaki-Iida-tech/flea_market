@@ -68,7 +68,7 @@ class ItemCreateTest extends TestCase
         // 「出品する」ボタンを押す
         $response = $this->actingAs($user)->post('/sell', $itemData);
         $response->assertStatus(302);
-        $response->assertRedirect('/');
+        $response->assertRedirect('/sell/success');
 
         // 各DBに情報が存在することを確認
         $this->assertDatabaseHas('items', [

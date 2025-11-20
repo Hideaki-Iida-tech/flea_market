@@ -1,0 +1,29 @@
+.error-form {
+    min-width: 1400px;
+    max-width: 1540px;
+}
+
+.error-form-inner {
+    margin: 200px auto;
+    width: 680px;
+    height: 656px;
+}
+
+.error-message {
+    font-weight: bold;
+    text-align: center;
+}
+
+.error-exec {
+    text-align: center;
+    padding: 20px 20px;
+}
+
+.error-exec-button {
+    height: 40px;
+    border-radius: 5px;
+    color: #000;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+}

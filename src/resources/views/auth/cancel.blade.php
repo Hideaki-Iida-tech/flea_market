@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="{{ asset('css/auth/cancel.css') }}">
 @endsection
 @section('title')
-支払処理成功
+支払処理キャンセル
 @endsection
 @section('content')
 <div class="cancel-form">
