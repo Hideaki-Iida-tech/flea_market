@@ -33,6 +33,8 @@ Route::middleware('auth', 'verified')->group(function () {
     // 出品関係
     Route::get('/sell', [ItemController::class, 'create']); // 画面表示
     Route::post('/sell', [ItemController::class, 'store']); // 出品処理
+    Route::get('/sell/success', [ItemController::class, 'success']); // 出品成功画面表示
+    Route::get('/sell/error', [ItemController::class, 'error']); // 出品失敗画面表示
     // コメント処理
     Route::post('/item/{item_id}/comment', [ItemController::class, 'commentCreate'])->where('item_id', '[0-9]+');
     // いいね処理
