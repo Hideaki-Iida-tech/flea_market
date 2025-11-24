@@ -16,6 +16,10 @@ class AddressRequest extends FormRequest
         return true;
     }
 
+    /**
+     * パスパラメータitem_idをバリデーション対象に追加するメソッド
+     * @return array
+     */
     public function validationData()
     {
         return array_merge($this->all(), [
@@ -23,6 +27,11 @@ class AddressRequest extends FormRequest
         ]);
     }
 
+    /**
+     * バリデーション実行前にコールされるLaravel既定のメソッドをオーバーライド
+     * 入力データの整形処理
+     * @return void
+     */
     protected function prepareForValidation()
     {
 
@@ -35,7 +44,8 @@ class AddressRequest extends FormRequest
         $digits = preg_replace('/\D/u', '', $raw);
 
         // 7桁なら xxx-xxxx に整形、そうでなければ"数字だけ"を入れておき、後続のルールで弾く
-        $this->merge(['postal_code' => strlen($digits) === 7 ? substr($digits, 0, 3) . '-' . substr($digits, 3) : $digits]);
+        $this->merge(['postal_code' => strlen($digits) === 7 ? substr($digits, 0, 3)
+            . '-' . substr($digits, 3) : $digits]);
     }
 
     /**
@@ -46,14 +56,19 @@ class AddressRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            // 商品IDがitemsテーブルのidに存在すること、ordersテーブルに同じ値がないこと等
             'item_id' => ['required', 'exists:items,id', 'unique:orders', 'integer', 'min:1',],
+            // 郵便番号が整数3桁-整数4桁であること等
             'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/'],
             'address' => ['required', 'string', 'max:255'],
             'building' => ['sometimes', 'string', 'nullable', 'max:255'],
         ];
     }
 
+    /**
+     * バリデーションエラー時のメッセージを設定するメソッド
+     * @return array
+     */
     public function messages()
     {
         return [

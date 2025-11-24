@@ -1,13 +1,17 @@
 @extends('layouts.app')
+
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/auth/verify-email.css') }}">
 @endsection
+
 @section('title')
 メール認証誘導画面
 @endsection
+
 @section('content')
 <div class="verify-email-form">
     <div class="verify-email-form-inner">
+
         <div class="verify-email-message">
             登録いただいたメールアドレスに認証メールを送付しました。<br />
             メール認証を完了してください。

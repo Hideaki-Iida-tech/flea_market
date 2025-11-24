@@ -31,7 +31,6 @@
 }
 
 /* 以下ヘッダー部CSS終わり */
-
 .user-info {
     width: 1017px;
     height: 150px;
@@ -60,6 +59,13 @@ a {
 
 .profile-menu-link {
     color: #ff0000;
+    display: inline-block;
+    margin-right: 40px;
+}
+
+.profile-menu-buy {
+    display: inline-block;
+    margin-left: 40px;
 }
 
 hr {
@@ -97,11 +103,15 @@ hr {
 }
     
 .profile-img-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px 0 30px;
     background: #fff;
     border-color: #ff0000;
     color: #ff0000;
     border-radius: 5px;
-    height: 60px;
+    height: 50px;
     font-size: 20px;
     cursor: pointer;
 }

@@ -1,15 +1,19 @@
 @extends('layouts.app')
+
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/address/edit.css') }}">
 @endsection
+
 @section('title')
 送付先住所変更画面
 @endsection
+
 @section('input')
 <form id="search-form" action="/" method="get">
     <input type="text" id="search-box" name="keyword" class="header-search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
 </form>
 @endsection
+
 @section('button')
 <div class="header-button">
     <form action="/logout" method="post">
@@ -29,11 +33,13 @@
     <form action="/purchase/address/{{ $item->id }}" class="address-form-inner" method="post">
         @csrf
         <table class="address-form-table">
+
             <tr class="address-form-row-first">
                 <td>
                     <h1>住所の変更</h1>
                 </td>
             </tr>
+
             <tr class="address-form-row">
                 <td>
                     <label class="address-form-label">
@@ -51,6 +57,7 @@
                     @endif
                 </td>
             </tr>
+
             <tr class="address-form-row">
                 <td>
                     <label class="address-form-label">住所<br /><input type="text" class="address-input" name="address" value="{{ old('address', $address) }}" />
@@ -66,6 +73,7 @@
                     @endif
                 </td>
             </tr>
+
             <tr class="address-form-row">
                 <td>
                     <label class="address-form-label">建物名<br /><input type="text" class="address-input" name="building" value="{{ old('building', $building) }}" /></label>
@@ -80,6 +88,7 @@
                     @endif
                 </td>
             </tr>
+
             <tr class="address-form-row">
                 <td class="address-form-col-button">
                     <button type="submit" class="address-button">更新する<br /></button>
@@ -88,11 +97,16 @@
         </table>
     </form>
 </div>
+
 <script>
+    // Enterキー押下でフォームが自動送信されてしまうのを防ぎ、
+    // 手動で search-form を送信するためのイベントリスナー
+    // 検索ボックスに「商品名」が入力されてEnterキーが押下された場合の挙動
     document.getElementById('search-box').addEventListener('keydown', function(e) {
+        // Enterキーが押された場合
         if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('search-form').submit();
+            e.preventDefault(); // デフォルトのフォーム送信をキャンセル
+            document.getElementById('search-form').submit(); // 明示的にフォーム送信
         }
     });
 </script>

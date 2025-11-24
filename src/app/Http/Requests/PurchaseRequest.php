@@ -20,6 +20,10 @@ class PurchaseRequest extends FormRequest
         return true;
     }
 
+    /**
+     * パスパラメータitem_idと、ログインユーザーのidをバリデーション対象に追加するメソッド
+     * @return array
+     */
     public function validationData()
     {
         return array_merge($this->all(), [
@@ -36,17 +40,28 @@ class PurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            // user_id がusersテーブルのidに存在すること等
             'user_id' => ['required', 'exists:users,id', 'integer', 'min:1',],
+            // item_id がitemsテーブルのidに存在すること等
             'item_id' => ['required', 'exists:items,id', 'integer', 'min:1',],
             'price' => ['required', 'integer', 'min: 0',],
-            'payment_method' => ['required', 'integer', 'in:' . implode(',', array_keys(Order::$paymentLabels)),],
+            // Orderモデルで定義した支払い方法の整数コードの中からどれかの値であること
+            'payment_method' => [
+                'required',
+                'integer',
+                'in:' . implode(',', array_keys(Order::$paymentLabels)),
+            ],
+            // 郵便番号が3桁の整数‐4桁の整数であること等
             'postal_code' => ['required', 'regex:/^\d{3}-\d{4}$/',],
             'address' => ['required', 'string',],
             'building' => ['string', 'nullable'],
         ];
     }
 
+    /**
+     * バリデーションエラー時のメッセージを設定するメソッド
+     * @return array
+     */
     public function messages()
     {
         return [

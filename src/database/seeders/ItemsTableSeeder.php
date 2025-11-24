@@ -12,11 +12,13 @@ class ItemsTableSeeder extends Seeder
     /**
      * Run the database seeds.
      *
+     * 出品されている商品を投入するseeder
+     * 商品画像としてawsのs3に保存されている画像の外部URLを設定している
+     * 
      * @return void
      */
     public function run()
     {
-        //
         $conditionId = Condition::where('name', '良好')->value('id')
             ?? Condition::inRandomOrder()->first()->id;
         $userId = User::where('name', 'テストユーザー1')->first()->id

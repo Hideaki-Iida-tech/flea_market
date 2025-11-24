@@ -16,16 +16,31 @@ class ProfileRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Laravel既定のメソッドfailedValidatinをオーバーライド
+     * バリデーション失敗時のリダイレクト挙動を完全にカスタマイズしている
+     * 既定のメソッドでは一部の入力値がold()で復元されないため。
+     * @param \Illuminate\Contracts\Validation\Validator $validator
+     * @return void
+     */
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator): void
     {
-        //parent::failedValidation($validator); // ← 標準のリダイレクト（old付き）
+        //parent::failedValidation($validator); // ← 親クラスのメソッドを呼ばないことで、標準のリダイレクトを無効化
         $response = redirect()->to($this->getRedirectUrl())
             ->withInput($this->all())              // ← PFV後の全入力を明示的にフラッシュ
             ->withErrors($validator, $this->errorBag);
 
+        // 例外を投げて、バリデーションエラーを発生させる
         throw new \Illuminate\Validation\ValidationException($validator, $response);
     }
 
+    /**
+     * バリデーション実行前にコールされるLaravel既定のメソッドをオーバーライド
+     * input type="file" name="profile_image"のダイアログで選択されて送信された画像ファイルが存在する場合、
+     * その画像ファイルを一時保存し、その一時パスをcurrent_profile_imageとしてバリデーションデータに追加
+     * その他のテキストデータを適切な形に整形
+     * @return void
+     */
     protected function prepareForValidation()
     {
 
@@ -40,6 +55,7 @@ class ProfileRequest extends FormRequest
         // 7桁なら xxx-xxxx に整形、そうでなければ"数字だけ"を入れておき、後続のルールで弾く
         $this->merge(['postal_code' => strlen($digits) === 7 ? substr($digits, 0, 3) . '-' . substr($digits, 3) : $digits]);
 
+        // すべての項目が埋まっていれば、プロフィール設定完了フラグをtrueに
         $this->merge([
             'is_profile_completed' => ($this->hasFile('profile_image') || filled(optional($this->user())->profile_image)) && filled($this->name) &&
                 filled($this->postal_code) &&
@@ -60,12 +76,8 @@ class ProfileRequest extends FormRequest
      */
     public function rules()
     {
-        //$hasImage = filled(optional($this->user())->profile_image);
         return [
-            //
-
             'profile_image' => [
-                //$hasImage ? 'nullable' : 'required',
                 'nullable',
                 'image',
                 'mimes:jpeg,png',
@@ -92,6 +104,10 @@ class ProfileRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションエラー時のメッセージを設定
+     * @return void
+     */
     public function messages()
     {
         return [
@@ -105,6 +121,14 @@ class ProfileRequest extends FormRequest
         ];
     }
 
+    /**
+     * Laravel既定のメソッドをオーバーライド
+     * バリデーション後の追加チェック処理を差しこんでいる
+     * ダイアログで画像ファイルが選択されず、hiddenにもパスが設定されていない場合、
+     * バリデーションエラーとしている。
+     * @param Illuminate\Validation\Validator
+     * @return void
+     */
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {

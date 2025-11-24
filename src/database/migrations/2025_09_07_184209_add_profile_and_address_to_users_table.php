@@ -13,8 +13,8 @@ class AddProfileAndAddressToUsersTable extends Migration
      */
     public function up()
     {
+        // usersテーブル
         Schema::table('users', function (Blueprint $table) {
-            //
             $table->string('profile_image')->nullable()->after('password');
             $table->string('postal_code', 8)->nullable()->after('profile_image');
             $table->string('address')->nullable()->after('postal_code');
@@ -31,8 +31,13 @@ class AddProfileAndAddressToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
-            $table->dropColumn(['profile_image', 'postal_code', 'address', 'building']);
+            $table->dropColumn([
+                'profile_image',
+                'postal_code',
+                'address',
+                'building',
+                'is_profile_completed',
+            ]);
         });
     }
 }

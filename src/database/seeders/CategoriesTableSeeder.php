@@ -10,6 +10,10 @@ class CategoriesTableSeeder extends Seeder
     /**
      * Run the database seeds.
      *
+     * カテゴリーテーブルのマスタデータを生成するseeder
+     * seederが実行されない場合は、items/create.blade.phpのviewが表示される際に、
+     * config/master.phpの値を読み込んでマスタデータとしてDBに保存
+     * 
      * @return void
      */
     public function run()

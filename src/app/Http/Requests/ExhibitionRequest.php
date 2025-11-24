@@ -20,16 +20,30 @@ class ExhibitionRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Laravel既定のメソッドfailedValidatinをオーバーライド
+     * バリデーション失敗時のリダイレクト挙動を完全にカスタマイズしている
+     * 既定のメソッドでは一部の入力値がold()で復元されないため。
+     * @param \Illuminate\Contracts\Validation\Validator $validator
+     * @return void
+     */
     protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator): void
     {
-        //parent::failedValidation($validator); // ← 標準のリダイレクト（old付き）
+        //parent::failedValidation($validator); // ← 親クラスのメソッドを呼ばないことで、標準のリダイレクトを無効化
         $response = redirect()->to($this->getRedirectUrl())
             ->withInput($this->all())              // ← PFV後の全入力を明示的にフラッシュ
             ->withErrors($validator, $this->errorBag);
 
+        // 例外を投げて、バリデーションエラーを発生させる
         throw new \Illuminate\Validation\ValidationException($validator, $response);
     }
 
+    /**
+     * バリデーション実行前にコールされるLaravel既定のメソッドをオーバーライド
+     * input type="file" name="item_image"のダイアログで選択されて送信された画像ファイルが存在する場合、
+     * その画像ファイルを一時保存し、その一時パスをcurrent_item_imageとしてバリデーションデータに追加
+     * @return void
+     */
     protected function prepareForValidation()
     {
         // 画像が送られてきたら、 tmp に保存して、そのパスを hidden 用に差し込む
@@ -70,6 +84,10 @@ class ExhibitionRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションエラー時のメッセージを設定するメソッド
+     * @return array
+     */
     public function messages()
     {
         return [
@@ -91,6 +109,14 @@ class ExhibitionRequest extends FormRequest
         ];
     }
 
+    /**
+     * Laravel既定のメソッドをオーバーライド
+     * バリデーション後の追加チェック処理を差しこんでいる
+     * ダイアログで画像ファイルが選択されず、hiddenにもパスが設定されていない場合、
+     * バリデーションエラーとしている。
+     * @param Illuminate\Validation\Validator
+     * @return void
+     */
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {

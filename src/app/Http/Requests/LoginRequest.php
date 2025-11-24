@@ -25,12 +25,16 @@ class LoginRequest extends BaseLoginRequest
     public function rules()
     {
         return [
-            //
+            // emailがusersテーブルのemailに存在すること等
             'email' => ['required', 'string', 'email', 'exists:users,email'],
             'password' => ['required', 'string'],
         ];
     }
 
+    /**
+     * バリデーションエラー時のメッセージを設定
+     * @return void
+     */
     public function messages()
     {
         return [
