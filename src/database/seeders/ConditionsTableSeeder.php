@@ -10,6 +10,10 @@ class ConditionsTableSeeder extends Seeder
     /**
      * Run the database seeds.
      *
+     * 商品状態を格納するconditionsテーブルのマスタデータを投入するseeder
+     * このseederが実行される前に、items/create.blade.phpのviewが表示される場合には、
+     * config/master.phpからマスターデータを読み込んで、マスタデータとしてDBに保存
+     * 
      * @return void
      */
     public function run()

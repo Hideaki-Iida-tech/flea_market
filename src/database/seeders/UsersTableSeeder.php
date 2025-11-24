@@ -11,6 +11,9 @@ class UsersTableSeeder extends Seeder
     /**
      * Run the database seeds.
      *
+     * users1テーブルのseeder
+     * テストユーザー1、テストユーザー2、テストユーザー3の3名を投入
+     * 
      * @return void
      */
     public function run()

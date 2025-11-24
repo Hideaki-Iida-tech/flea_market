@@ -25,13 +25,17 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            //
             'name' => ['required', 'string', 'max:20'],
+            // emailがusersテーブルのemailに存在しないこと等
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
 
+    /**
+     * バリデーションエラー時のメッセージを設定
+     * @return void
+     */
     public function messages()
     {
         return [

@@ -9,5 +9,6 @@ class Category extends Model
 {
     use HasFactory;
 
+    // カラムnameを書き換え可能に設定
     protected $fillable = ['name'];
 }

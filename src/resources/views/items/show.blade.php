@@ -1,15 +1,19 @@
 @extends('layouts.app')
+
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/items/show.css') }}">
 @endsection
+
 @section('title')
 商品詳細画面
 @endsection
+
 @section('input')
 <form id="search-form" action="/" method="get">
     <input type="text" id="search-box" name="keyword" class="header-search" placeholder="何をお探しですか？" value="{{ old('keyword',$keyword ?? '') }}" />
 </form>
 @endsection
+
 @section('button')
 @if(Auth::check())
 <div class="header-button">
@@ -39,23 +43,29 @@
 </div>
 @endif
 @endsection
+
 @section('content')
 <div class="items-content">
+
     <div class="items-image">
         <img src="{{ $item->image_url }}" alt="商品画像" class="items-img" />
     </div>
+
     <div class="items-detail">
+
         <h1 class="item-name">
             {{ $item->item_name }}
         </h1>
+
         <div class="brand">
             {{ $item->brand }}
         </div>
+
         <div class="price">
             ¥<span class="price-font">{{ number_format($item->price) }}</span>（税込）
         </div>
-        <div class="icons">
 
+        <div class="icons">
 
             <div class="like">
                 @if(Auth::check())
@@ -92,7 +102,9 @@
                     {{ $comments->count() }}
                 </div>
             </div>
+
         </div>
+
         @if(!$sold)
         @if(Auth::check())
         <form action="/purchase/{{ $item->id }}" class="form-purchase" method="get">
@@ -106,12 +118,16 @@
         @else
         <div class="purchase-completed">購入処理済み</div>
         @endif
+
         <h2>商品説明</h2>
+
         <div class="description">
             {{ $item->description }}
         </div>
+
         <h2>商品の情報</h2>
         <table>
+
             <tr>
                 <th>
                     カテゴリー
@@ -124,6 +140,7 @@
                     @endforeach
                 </td>
             </tr>
+
             <tr>
                 <th>
                     商品の状態
@@ -134,7 +151,9 @@
                     </div>
                 </td>
             </tr>
+
         </table>
+
         <h2>コメント(<span class="comment-count">{{ $comments->count() }}</span>)</h2>
         <div class="comment-container">
             @foreach($comments as $comment)
@@ -188,24 +207,38 @@
         </form>
         @endif
     </div>
+
 </div>
+
 <script>
+    // Enterキー押下でフォームが自動送信されてしまうのを防ぎ、
+    // 手動で search-form を送信するためのイベントリスナー
+    // 検索ボックスに「商品名」が入力されてEnterキーが押下された場合の挙動
     document.getElementById('search-box').addEventListener('keydown', function(e) {
+        // Enterキーが押された場合
         if (e.key === 'Enter') {
-            e.preventDefault();
-            document.getElementById('search-form').submit();
+            e.preventDefault(); // デフォルトのフォーム送信をキャンセル
+            document.getElementById('search-form').submit(); // 明示的にフォーム送信
         }
     });
 
+    // 未ログイン状態での「いいね」「コメント」「購入」ボタン押下時に
+    // アラート表示でユーザーにログインを促すための処理
+
+    // 各フォーム要素を取得
     const likeForm = document.getElementById('like-form');
     const commentForm = document.getElementById('comment-form');
     const purchaseForm = document.getElementById('purchase-form');
+
+    // いいねフォーム送信時のアラート表示
     likeForm.addEventListener("submit", function() {
         alert("いいねするにはログインが必要です。");
     });
+    // コメントフォーム送信時のアラート表示
     commentForm.addEventListener("submit", function() {
         alert("コメントするにはログインが必要です。");
     });
+    // 購入フォーム送信時のアラート表示
     purchaseForm.addEventListener("submit", function() {
         alert("購入手続きを行うにはログインが必要です。");
     });

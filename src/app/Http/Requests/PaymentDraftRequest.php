@@ -16,6 +16,10 @@ class PaymentDraftRequest extends FormRequest
         return true;
     }
 
+    /**
+     * パスパラメータitem_idをバリデーション対象に追加するメソッド
+     * @return array
+     */
     public function validationData()
     {
         return array_merge($this->all(), [
@@ -31,8 +35,9 @@ class PaymentDraftRequest extends FormRequest
     public function rules()
     {
         return [
-            //
             'payment_method' => ['nullable', 'integer',],
+            // 追加したパスパラメータ由来のitem_idがitemsテーブルのidに存在することや
+            // ordersテーブルに存在する値でないこと等
             'item_id' => ['required', 'exists:items,id', 'unique:orders', 'integer', 'min:1',],
         ];
     }

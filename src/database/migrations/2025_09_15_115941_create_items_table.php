@@ -17,7 +17,7 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             // 主キー
             $table->id();
-            // 商品画像の相対パス
+            // 商品画像の相対パス、またはseederで生成する外部URL
             $table->string('item_image', 255);
             // conditionsテーブルのidを外部キーとするcondition_id
             $table->foreignId('condition_id')->constrained('conditions')->cascadeOnDelete();

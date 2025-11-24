@@ -16,6 +16,10 @@ class CommentRequest extends FormRequest
         return true;
     }
 
+    /**
+     * パスパラメータitem_idをバリデーション対象に追加するメソッド
+     * @return array
+     */
     public function validationData()
     {
         return array_merge($this->all(), [
@@ -37,6 +41,10 @@ class CommentRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションエラー時のメッセージを設定するメソッド
+     * @return array
+     */
     public function messages()
     {
         return [

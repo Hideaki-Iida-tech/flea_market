@@ -43,6 +43,7 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
+        // 本番用
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
@@ -63,6 +64,7 @@ return [
             ]) : [],
         ],
 
+        // テスト用
         'mysql_test' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),

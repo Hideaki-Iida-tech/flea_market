@@ -94,6 +94,7 @@ STRIPE_SECRET_KEY=`__SET_IN_LOCAL_ENV__`<br>
 ## テストの実施
 
 `docker-compose exec php bash`<br>
+`php artisan test --testsuite=Feature`または、<br>
 `php artisan test --filter=ItemIndexTest`＊<br>
 ＊は tests/Feature ディレクトリ下の各テストクラスのクラス名を指定
 
