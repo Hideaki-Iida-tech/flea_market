@@ -116,15 +116,23 @@
     border-radius: 3px;
     font-size: 20px;
 }
+.col-title {
+    writing-mode: horizontal-tb;
+    white-space: nowrap;
+}
 .categories-box {
     display: flex;
+    flex-wrap: wrap;
     padding: 10px 20px;
+    writing-mode: horizontal-tb;
 }
 .category-name {
     background: #cccccc;
     border-radius: 15px;
     padding: 0 10px;
-    margin: 0 10px;
+    margin: 0 10px 10px 0;
+    writing-mode: horizontal-tb;
+    white-space: nowrap;
 }
 .condition-box {
     padding: 10px 20px;
@@ -150,7 +158,7 @@
 .comment-content {
     display: flex;
     align-items: center;
-    height: 40px;
+    height: auto;
     background: #cccccc;
     border-radius: 3px;
 }

@@ -75,4 +75,27 @@ class User extends Authenticatable implements MustVerifyEmail
         $user = Self::where('id', $user_id)->first();
         return $user?->is_profile_completed ?? false;
     }
+
+    /**
+     * プロフィール画像の公開用URLを取得するアクセサ。
+     *
+     * ユーザーの profile_image カラムに格納された値をもとに、
+     * 画面表示に使用できる完全な画像URLを返す。
+     *
+     * 挙動:
+     * - profile_image が null または空の場合は空文字を返す。
+     * - 画像パスが 'https://' で始まる場合は外部URLと判断し、そのまま返す。
+     * - それ以外の場合は storage 配下に保存されたローカルファイルとして扱い、
+     *   asset('storage/...') を用いて公開URLを生成して返す。
+     *
+     * @return string プロフィール画像の完全URL。画像が未設定の場合は空文字。
+     */
+    public function getProfileImageUrlAttribute()
+    {
+        if (!$this->profile_image) return '';
+        if (str_starts_with($this->profile_image, 'https://'))
+            return $this->profile_image;
+
+        return asset('storage/' . $this->profile_image);
+    }
 }
