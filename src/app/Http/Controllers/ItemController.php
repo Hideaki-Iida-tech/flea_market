@@ -163,27 +163,8 @@ class ItemController extends Controller
      */
     public function create()
     {
-        // カテゴリマスタが未登録なら、config から投入
-        if (!Category::query()->exists()) {
-            $masterCategories = config('master.categories', []);
-
-            // カテゴリテーブルにconfigからの投入値を保存
-            foreach ($masterCategories as $attrs) {
-                Category::create($attrs);
-            }
-        }
-
-        // コンディションマスタが未登録なら、config から投入
-        if (!Condition::query()->exists()) {
-            $masterConditions = config('master.conditions', []);
-
-            // コンディションテーブルにconfigからの投入値を保存
-            foreach ($masterConditions as $attrs) {
-                Condition::create($attrs);
-            }
-        }
-
-        // 改めて DB から取得（ここに来る時点で必ずDBにマスタデータが入っている想定）
+        // カテゴリーと商品状態のモデルを取得
+        // 出品画面に表示される選択肢
         $categories = Category::all();
         $conditions = Condition::all();
 
