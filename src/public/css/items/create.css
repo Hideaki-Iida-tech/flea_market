@@ -155,6 +155,15 @@ hr {
     height: 40px;
     border-radius: 3px;
 }
+.categories-empty {
+    background: #f00;
+    color: #fff;
+}
+.conditions-empty {
+    margin-top: 20px;
+    background: #f00;
+    color: #fff;
+}
 .name-and-description-title {
     margin-bottom: 0px;
 }

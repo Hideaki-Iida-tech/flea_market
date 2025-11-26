@@ -68,6 +68,12 @@
                 @endforeach
 
             </div>
+            <div class="categories-empty">
+                @if ($categories->isEmpty())
+                カテゴリーについてのマスタデータが未登録です。<br />
+                管理者に連絡してください。<br />
+                @endif
+            </div>
             @error('categories')
             <div class="sell-alert-danger">
                 <ul>
@@ -93,6 +99,12 @@
                     <option value="{{ $condition['id'] }}" {{ old('condition_id') == $condition['id'] ? 'selected' : ''}}>{{ $condition['name'] }}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="conditions-empty">
+                @if ($conditions->isEmpty())
+                商品の状態についてのマスタデータが未登録です。<br />
+                管理者に連絡してください。<br />
+                @endif
             </div>
             @if ($errors->has('condition_id'))
             <div class="sell-alert-danger">
