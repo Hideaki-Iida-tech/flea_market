@@ -129,7 +129,7 @@
         <table>
 
             <tr>
-                <th>
+                <th class="col-title">
                     カテゴリー
                 </th>
                 <td class="categories-box">
@@ -142,7 +142,7 @@
             </tr>
 
             <tr>
-                <th>
+                <th class="col-title">
                     商品の状態
                 </th>
                 <td class="condition-box">
@@ -157,11 +157,8 @@
         <h2>コメント(<span class="comment-count">{{ $comments->count() }}</span>)</h2>
         <div class="comment-container">
             @foreach($comments as $comment)
-            @php
-            $currentImage = optional($comment->user)->profile_image ? asset('storage/' . $comment->user->profile_image) : '';
-            @endphp
             <div class="user-info">
-                <img src="{{ $currentImage }}" alt="プロフィールイメージ" class="profile-image">
+                <img src="{{ $comment->user->profile_image_url }}" alt="プロフィールイメージ" class="profile-image">
                 <div class="user-name">{{ $comment->user->name }}</div>
             </div>
             <div class="comment-content">{{ $comment->body }}</div>
