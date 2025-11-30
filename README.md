@@ -14,6 +14,7 @@
 
 ### Docker ビルド・起動
 
+`cd flea_market`<br>
 `docker-compose up -d --build`
 
 ＊MySQL は、OS によって起動しない場合があるのでそれぞれの PC に合わせて docker-compose.yml ファイルを編集してください。
@@ -147,15 +148,26 @@ MySQL コンテナからログアウト
 lrwxrwxrwx 1 ユーザー名 グループ名 作成日時 storage -> /var/www/storage/app/public<br>
 と表示されれば成功<br>
 
+## プロフィール画像および商品画像を保存するディレクトリの作成
+
+`cd storage/app/public`<br>
+`mkdir -p tmp/profiles`<br>
+`mkdir -p tmp/items`<br>
+`mkdir profiles`<br>
+`mkdir items`<br>
+このディレクトリ作成処理次の所有権限及びパーミッションの変更前に必ず行ってください。（PHP コンテナ内）<br>
+でないと、プロフィール画面の保存処理、商品画像の保存処理のときに、Internal Server Error 500 が発生します。<br>
+
 ## Storage ディレクトリと bootstrap/cache の所有及びパーミッションの変更
 
 `chown -R www-data:www-data storage bootstrap/cache`<br>
 `chmod -R 775 storage bootstrap/cache`<br>
 ※環境によっては、所有権限及びパーミッション関係のエラーが発生することがあります。<br>
 エラーが発生した場合は、PHP コンテナ内でこれらのコマンドを実行してください<br>
-コマンドを実行するタイミングによっては、プロフィール画像の登録時等に<br>
+コマンドを実行するタイミングによっては、プロフィール画像や商品画像の登録時等に<br>
 Internal Server Error 500 が発生することがありますので、その際にはもう一度これらの<br>
-コマンドを実行してください。
+コマンドを実行してください。<br>
+PHP コンテナからログアウト
 
 ## テストの実施
 
