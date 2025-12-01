@@ -155,7 +155,7 @@ lrwxrwxrwx 1 ユーザー名 グループ名 作成日時 storage -> /var/www/st
 `mkdir -p tmp/items`<br>
 `mkdir profiles`<br>
 `mkdir items`<br>
-このディレクトリ作成処理次の所有権限及びパーミッションの変更前に必ず行ってください。（PHP コンテナ内）<br>
+このディレクトリ作成処理を次の所有権限及びパーミッションの変更前に必ず行ってください。（PHP コンテナ内）<br>
 でないと、プロフィール画面の保存処理、商品画像の保存処理のときに、Internal Server Error 500 が発生します。<br>
 
 ## Storage ディレクトリと bootstrap/cache の所有及びパーミッションの変更
